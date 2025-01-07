@@ -29,6 +29,9 @@ public class BeerRestController {
 
     @PostMapping
     public Beer createBeer(@RequestBody Beer beer) {
+        if (beer.getName() == null || beer.getName().isEmpty() || beer.getAbv() <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid beer data");
+        }
         beers.add(beer);
         return beer;
     }
