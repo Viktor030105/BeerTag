@@ -23,8 +23,19 @@ public class BeerRestController {
     }
 
     @GetMapping
-    public List<Beer> getBeers() {
+    public List<Beer> getAllBeers() {
         return beers;
+    }
+
+    @GetMapping("/{id}")
+    public Beer getBeerById(@PathVariable int id) {
+        return beers.stream()
+                .filter(beer -> beer.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Beer with id %d not found", id)
+                ));
     }
 
     @PostMapping
