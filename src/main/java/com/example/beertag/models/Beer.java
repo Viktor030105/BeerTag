@@ -9,7 +9,7 @@ public class Beer {
     @Positive(message = "Id should be positive")
     private int id;
 
-    @NotNull(message = "Name can not be empty")
+    @NotNull(message = "Name can't be empty")
     @Size(min = 2, max = 20, message = "Name should be between 2 and 20 symbols")
     private String name;
 
