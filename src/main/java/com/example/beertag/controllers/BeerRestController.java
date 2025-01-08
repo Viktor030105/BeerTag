@@ -1,7 +1,10 @@
 package com.example.beertag.controllers;
 
 
+import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
+import com.example.beertag.service.BeerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,56 +16,58 @@ import java.util.List;
 @RequestMapping("/api/beers")
 public class BeerRestController {
 
-    private final List<Beer> beers;
+    private BeerServiceImpl service;
 
     public BeerRestController() {
-        beers = new ArrayList<>();
-        beers.add(new Beer(1, "Corona", 2.5));
-        beers.add(new Beer(2, "Kamenica", 2.8));
-        beers.add(new Beer(3, "Zagorka", 3.5));
+        this.service = new BeerServiceImpl();
     }
 
     @GetMapping
     public List<Beer> getAllBeers() {
-        return beers;
+        return service.getAllBeers();
     }
 
     @GetMapping("/{id}")
     public Beer getBeerById(@PathVariable int id) {
-        return beers.stream()
-                .filter(beer -> beer.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        String.format("Beer with id %d not found", id)
-                ));
+        try{
+            return service.getById(id);
+        } catch (EntityNotFoundExeption ex){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.getMessage());
+        }
+
     }
 
     @PostMapping
     public Beer createBeer(@RequestBody Beer beer) {
-        if (beer.getName() == null || beer.getName().isEmpty() || beer.getAbv() <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid beer data");
+        try{
+            service.createBeer(beer);
+        } catch (DublicateEntityExeption ex){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
         }
-        beers.add(beer);
+
         return beer;
     }
 
     @PutMapping("/{id}")
     public Beer updateBeer(@PathVariable int id, @RequestBody Beer beerToUpdate) {
-        Beer existingBeer = beers.stream()
-                .filter(beer -> beer.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        String.format("Beer with id %d not found", id)
-                ));
-        existingBeer.setName(beerToUpdate.getName());
-        existingBeer.setAbv(beerToUpdate.getAbv());
-        return existingBeer;
+        try{
+            service.updateBeer(beerToUpdate);
+        } catch (EntityNotFoundExeption ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        } catch (DublicateEntityExeption ex){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
+        }
+
+        return beerToUpdate;
     }
 
     @DeleteMapping("/{id}")
     public void deleteBeer(@PathVariable int id) {
-        beers.removeIf(beer -> beer.getId() == id);
+        try{
+            service.deleteBeer(id);
+        } catch (EntityNotFoundExeption ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+        }
     }
 }
