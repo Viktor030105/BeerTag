@@ -4,25 +4,31 @@ import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
 import com.example.beertag.repository.BeerRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
+public class BeerServiceImpl implements BeerService {
 
-public class BeerServiceImpl {
+    private final BeerRepositoryImpl repository;
 
-    private BeerRepositoryImpl repository;
-
-    public BeerServiceImpl() {
-        this.repository = new BeerRepositoryImpl();
+    @Autowired
+    public BeerServiceImpl(BeerRepositoryImpl repository) {
+        this.repository = repository;
     }
 
+    @Override
     public List<Beer> getAllBeers() {
         return repository.getAllBeers();
     }
 
+    @Override
     public Beer getById(int id){
         return repository.getById(id);
     }
 
+    @Override
     public void createBeer(Beer beer){
         boolean dublicateExists = true;
 
@@ -39,6 +45,7 @@ public class BeerServiceImpl {
         repository.createBeer(beer);
     }
 
+    @Override
     public void updateBeer(Beer beer){
         boolean dublicateExists = true;
 
@@ -58,6 +65,7 @@ public class BeerServiceImpl {
         repository.updateBeer(beer);
     }
 
+    @Override
     public void deleteBeer(int id){
         repository.deleteBeer(id);
     }

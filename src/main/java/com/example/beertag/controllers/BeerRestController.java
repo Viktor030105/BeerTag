@@ -4,22 +4,25 @@ package com.example.beertag.controllers;
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
+import com.example.beertag.service.BeerService;
 import com.example.beertag.service.BeerServiceImpl;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/beers")
 public class BeerRestController {
 
-    private BeerServiceImpl service;
+    private final BeerServiceImpl service;
 
-    public BeerRestController() {
-        this.service = new BeerServiceImpl();
+    @Autowired
+    public BeerRestController(BeerServiceImpl service) {
+        this.service = service;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class BeerRestController {
     }
 
     @PostMapping
-    public Beer createBeer(@RequestBody Beer beer) {
+    public Beer createBeer(@Valid @RequestBody Beer beer) {
         try{
             service.createBeer(beer);
         } catch (DublicateEntityExeption ex){
@@ -50,16 +53,16 @@ public class BeerRestController {
     }
 
     @PutMapping("/{id}")
-    public Beer updateBeer(@PathVariable int id, @RequestBody Beer beerToUpdate) {
+    public Beer updateBeer(@PathVariable int id, @Valid @RequestBody Beer beerToUpdate) {
         try{
+            beerToUpdate.setId(id);
             service.updateBeer(beerToUpdate);
+            return beerToUpdate;
         } catch (EntityNotFoundExeption ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         } catch (DublicateEntityExeption ex){
             throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage());
         }
-
-        return beerToUpdate;
     }
 
     @DeleteMapping("/{id}")
