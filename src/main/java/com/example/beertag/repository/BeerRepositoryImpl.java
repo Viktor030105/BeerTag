@@ -12,14 +12,16 @@ import java.util.List;
 @Repository
 public class BeerRepositoryImpl implements BeerRepository{
 
+    private StyleRepository repository;
     private final List<Beer> beers;
 
-    public BeerRepositoryImpl() {
+    public BeerRepositoryImpl(StyleRepository repository) {
+        this.repository = repository;
         beers = new ArrayList<>();
 
-        beers.add(new Beer(1, "Corona", 2.5));
-        beers.add(new Beer(2, "Kamenica", 2.8));
-        beers.add(new Beer(3, "Zagorka", 3.5));
+        beers.add(new Beer(1, "Corona", 2.5, repository.getById(1)));
+        beers.add(new Beer(2, "Kamenica", 2.8, repository.getById(2)));
+        beers.add(new Beer(3, "Zagorka", 3.5, repository.getById(3)));
     }
 
     @Override

@@ -18,10 +18,13 @@ public class Beer {
     @Positive(message = "ABV should be positive")
     private double abv;
 
-    public Beer(int id, String name, double abv) {
+    private Style style;
+
+    public Beer(int id, String name, double abv, Style style) {
         this.id = id;
         this.name = name;
         this.abv = abv;
+        this.style = style;
     }
 
     public Beer() {
@@ -50,6 +53,14 @@ public class Beer {
 
     public void setAbv(double abv) {
         this.abv = abv;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
     }
 
     @Override
