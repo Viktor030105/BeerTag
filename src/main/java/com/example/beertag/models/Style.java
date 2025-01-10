@@ -1,5 +1,7 @@
 package com.example.beertag.models;
 
+import java.util.Objects;
+
 public class Style {
 
     private int id;
@@ -27,5 +29,18 @@ public class Style {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Style style = (Style) o;
+        return id == style.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

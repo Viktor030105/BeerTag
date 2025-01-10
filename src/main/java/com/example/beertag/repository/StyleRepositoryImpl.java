@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class StyleRepositoryImpl implements StyleRepository{
 
-    private List<Style> styles;
+    private final List<Style> styles;
 
     public StyleRepositoryImpl() {
         this.styles = new ArrayList<>();
@@ -25,7 +25,7 @@ public class StyleRepositoryImpl implements StyleRepository{
         return styles.stream()
                 .filter(style -> style.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundExeption("Style", "id", String.valueOf(id)));
+                .orElseThrow(() -> new EntityNotFoundExeption("Style", id));
     }
 
     @Override
