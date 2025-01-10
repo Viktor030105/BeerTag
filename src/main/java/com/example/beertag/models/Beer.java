@@ -20,11 +20,10 @@ public class Beer {
 
     private Style style;
 
-    public Beer(int id, String name, double abv, Style style) {
+    public Beer(int id, String name, double abv) {
         this.id = id;
         this.name = name;
         this.abv = abv;
-        this.style = style;
     }
 
     public Beer() {

@@ -3,7 +3,7 @@ package com.example.beertag.service;
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
-import com.example.beertag.repository.BeerRepositoryImpl;
+import com.example.beertag.repository.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +11,16 @@ import java.util.List;
 @Service
 public class BeerServiceImpl implements BeerService {
 
-    private final BeerRepositoryImpl repository;
+    private final BeerRepository repository;
 
     @Autowired
-    public BeerServiceImpl(BeerRepositoryImpl repository) {
+    public BeerServiceImpl(BeerRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public List<Beer> getAllBeers() {
-        return repository.getAllBeers();
+    public List<Beer> getAllBeers(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String sortOrder) {
+        return repository.getAllBeers(name, minAbv, maxAbv, styleId, sortBy, sortOrder);
     }
 
     @Override
