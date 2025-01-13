@@ -3,12 +3,15 @@ package com.example.beertag.controllers;
 
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.BeerMapper;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.BeerDTO;
+import com.example.beertag.models.User;
 import com.example.beertag.service.BeerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,11 +24,13 @@ public class BeerRestController {
 
     private final BeerService service;
     private final BeerMapper beerMapper;
+    private final AuthenticationHelper helper;
 
     @Autowired
-    public BeerRestController(BeerService service, BeerMapper beerMapper) {
+    public BeerRestController(BeerService service, BeerMapper beerMapper, AuthenticationHelper helper) {
         this.service = service;
         this.beerMapper = beerMapper;
+        this.helper = helper;
     }
 
     @GetMapping
@@ -50,8 +55,10 @@ public class BeerRestController {
     }
 
     @PostMapping
-    public Beer createBeer(@Valid @RequestBody BeerDTO beerDTO) {
+    public Beer createBeer(@RequestHeader HttpHeaders headers, @Valid @RequestBody BeerDTO beerDTO) {
         try{
+            User user = helper.tryGetUser(headers);
+
             Beer beer = beerMapper.fromDto(beerDTO);
             service.createBeer(beer);
             return beer;
@@ -63,10 +70,12 @@ public class BeerRestController {
     }
 
     @PutMapping("/{id}")
-    public Beer updateBeer(@PathVariable int id, @Valid @RequestBody BeerDTO beerDTO) {
+    public Beer updateBeer(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody BeerDTO beerDTO) {
         try{
+            User user = helper.tryGetUser(headers);
+
             Beer beer = beerMapper.fromDto(id, beerDTO);
-            service.updateBeer(beer);
+            service.updateBeer(beer, user);
             return beer;
         } catch (EntityNotFoundExeption ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -76,9 +85,11 @@ public class BeerRestController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBeer(@PathVariable int id) {
+    public void deleteBeer(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try{
-            service.deleteBeer(id);
+            User user = helper.tryGetUser(headers);
+
+            service.deleteBeer(id, user);
         } catch (EntityNotFoundExeption ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
         }

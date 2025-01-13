@@ -1,6 +1,7 @@
 package com.example.beertag.service;
 
 import com.example.beertag.models.Beer;
+import com.example.beertag.models.User;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface BeerService {
 
     void createBeer(Beer beer);
 
-    void updateBeer(Beer beer);
+    void updateBeer(Beer beer, User user);
 
-    void deleteBeer(int id);
+    void deleteBeer(int id, User user);
 }
