@@ -4,7 +4,7 @@ package com.example.beertag.controllers;
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.helpers.AuthenticationHelper;
-import com.example.beertag.helpers.BeerMapper;
+import com.example.beertag.helpers.ModelMapper;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.BeerDTO;
 import com.example.beertag.models.User;
@@ -23,14 +23,14 @@ import java.util.List;
 public class BeerRestController {
 
     private final BeerService service;
-    private final BeerMapper beerMapper;
     private final AuthenticationHelper helper;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public BeerRestController(BeerService service, BeerMapper beerMapper, AuthenticationHelper helper) {
+    public BeerRestController(BeerService service, AuthenticationHelper helper, ModelMapper modelMapper) {
         this.service = service;
-        this.beerMapper = beerMapper;
         this.helper = helper;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -59,7 +59,7 @@ public class BeerRestController {
         try{
             User user = helper.tryGetUser(headers);
 
-            Beer beer = beerMapper.fromDto(beerDTO);
+            Beer beer = modelMapper.fromDto(beerDTO);
             service.createBeer(beer);
             return beer;
         } catch (EntityNotFoundExeption ex) {
@@ -74,7 +74,7 @@ public class BeerRestController {
         try{
             User user = helper.tryGetUser(headers);
 
-            Beer beer = beerMapper.fromDto(id, beerDTO);
+            Beer beer = modelMapper.fromDto(beerDTO, id);
             service.updateBeer(beer, user);
             return beer;
         } catch (EntityNotFoundExeption ex){

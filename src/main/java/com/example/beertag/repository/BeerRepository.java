@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BeerRepository {
 
-    List<Beer> getAllBeers(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String sortOrder);
+    List<Beer> getAllBeers();
 
     Beer getById(int id);
 

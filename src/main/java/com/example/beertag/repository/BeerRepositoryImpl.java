@@ -1,11 +1,17 @@
 package com.example.beertag.repository;
 
+
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 
-import java.util.ArrayList;
+
+import org.hibernate.query.Query;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,69 +20,74 @@ import java.util.stream.Collectors;
 @Repository
 public class BeerRepositoryImpl implements BeerRepository{
 
-    private final List<Beer> beers;
+    private final SessionFactory sessionFactory;
 
-    public BeerRepositoryImpl(StyleRepository styleRepository) {
-        beers = new ArrayList<>();
-        Beer beer = new Beer(1, "Glarus English Ale", 4.6);
-        beer.setStyle(styleRepository.getById(1));
-        beers.add(beer);
-
-        beer = new Beer(2, "Rhombus Porter", 5.0);
-        beer.setStyle(styleRepository.getById(2));
-        beers.add(beer);
-
-        beer = new Beer(3, "Opasen Char", 6.6);
-        beer.setStyle(styleRepository.getById(3));
-        beers.add(beer);
+    @Autowired
+    public BeerRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Beer> getAllBeers(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String sortOrder) {
-        List<Beer> result = beers;
-        result = filterByName(result, name);
-        result = filterByAbv(result, minAbv, maxAbv);
-        result = filterByStyle(result, styleId);
-        result = sortBy(result, sortBy);
-        result = order(result, sortOrder);
-        return result;
+    public List<Beer> getAllBeers() {
+        try (Session session = sessionFactory.openSession()){
+            Query<Beer> querry = session.createQuery("from Beer", Beer.class);
+            return querry.list();
+        }
     }
+
+
 
     @Override
     public Beer getById(int id){
-        return beers.stream()
-                .filter(beer -> beer.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundExeption("Beer", id));
+        try (Session session = sessionFactory.openSession()) {
+            Beer beer = session.get(Beer.class, id);
+            if (beer == null) {
+                throw new EntityNotFoundExeption("Beer", id);
+            }
+
+            return beer;
+        }
     }
 
     @Override
     public Beer getByName(String name){
-        return beers.stream()
-                .filter(beer -> beer.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundExeption("Beer", "name", name));
+        try (Session session = sessionFactory.openSession()){
+            Query<Beer> querry = session.createQuery("from Beer where name = :name", Beer.class);
+            querry.setParameter("name", name);
+            List<Beer> result = querry.list();
+
+            if (result.size() == 0) {
+                throw new EntityNotFoundExeption("Beer", "name", name);
+            }
+
+            return result.get(0);
+
+        }
     }
 
     @Override
     public void createBeer(Beer beer){
-        int nextId = beers.size() + 1;
-        beer.setId(nextId);
-        beers.add(beer);
+        try (Session session = sessionFactory.openSession()){
+            session.persist(beer);
+        }
     }
 
     @Override
     public void updateBeer(Beer beer){
-        Beer beerToUpdate = getById(beer.getId());
-        beerToUpdate.setName(beer.getName());
-        beerToUpdate.setAbv(beer.getAbv());
-        beerToUpdate.setStyle(beer.getStyle());
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.merge(beer);
+            session.getTransaction().commit();
+        }
     }
 
     @Override
     public void deleteBeer(int id){
-        Beer beerToDelete = getById(id);
-        beers.remove(beerToDelete);
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.remove(getById(id));
+            session.getTransaction().commit();
+        }
     }
 
     private static List<Beer> filterByName(List<Beer> beers, String name) {

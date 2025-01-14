@@ -22,7 +22,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public List<Beer> getAllBeers(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String sortOrder) {
-        return repository.getAllBeers(name, minAbv, maxAbv, styleId, sortBy, sortOrder);
+        return repository.getAllBeers();
     }
 
     @Override
