@@ -2,6 +2,9 @@ package com.example.beertag.repository;
 
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,33 +13,29 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private final List<User> users;
+    private final SessionFactory sessionFactory;
 
-    public UserRepositoryImpl() {
-        users = new ArrayList<>();
-        users.add(new User(1, "Gosho", "12345", true));
-        users.add(new User(2, "Ivan","12345", false));
-        users.add(new User(3, "Pesho", "12345", false));
+    @Autowired
+    public UserRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<User> getAll() {
-        return new ArrayList<>(users);
+        try(Session session = sessionFactory.openSession()) {
+            return session.createQuery("from User", User.class).list();
+        }
     }
 
     @Override
     public User getById(int id) {
-        return getAll().stream()
-                .filter(user -> user.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundExeption("User", id));
-    }
+        try (Session session = sessionFactory.openSession()) {
+            User user = session.get(User.class, id);
+            if (user == null) {
+                throw new EntityNotFoundExeption("User", id);
+            }
 
-    @Override
-    public User getByUsername(String username) {
-        return getAll().stream()
-                .filter(user -> user.getUsername() == username)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundExeption("User", "username", username));
+            return user;
+        }
     }
 }

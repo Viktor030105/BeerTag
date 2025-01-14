@@ -37,14 +37,6 @@ public class HibernateConfig {
         return sessionFactory;
     }
 
-    private Properties hibernateProperties() {
-
-        Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.mariadbDialect");
-
-        return hibernateProperties;
-    }
-
     @Bean
     public DataSource dataSource() {
 
@@ -55,5 +47,13 @@ public class HibernateConfig {
         dataSource.setPassword(dbPassword);
 
         return dataSource;
+    }
+
+    private Properties hibernateProperties() {
+
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.mariadbDialect");
+
+        return hibernateProperties;
     }
 }

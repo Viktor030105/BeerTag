@@ -20,13 +20,14 @@ public class Beer {
     @Column(name = "abv")
     private double abv;
 
+    @ManyToOne
+    @JoinColumn(name = "style_id")
     private Style style;
 
-    public Beer(int id, String name, double abv, Style style ) {
+    public Beer(int id, String name, double abv) {
         this.id = id;
         this.name = name;
         this.abv = abv;
-        this.style = style;
     }
 
     public Beer() {

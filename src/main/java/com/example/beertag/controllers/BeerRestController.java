@@ -1,6 +1,5 @@
 package com.example.beertag.controllers;
 
-
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.helpers.AuthenticationHelper;
