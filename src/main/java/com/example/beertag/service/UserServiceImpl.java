@@ -1,6 +1,9 @@
 package com.example.beertag.service;
 
+import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.models.Beer;
 import com.example.beertag.models.User;
+import com.example.beertag.repository.BeerRepository;
 import com.example.beertag.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +14,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final BeerRepository beerRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BeerRepository beerRepository) {
         this.userRepository = userRepository;
+        this.beerRepository = beerRepository;
     }
 
     @Override
@@ -25,5 +30,32 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getById(int id) {
         return userRepository.getById(id);
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userRepository.getByUsername(username);
+    }
+
+    @Override
+    public void addBeerToWishList(int userId, int beerId) {
+        User user = userRepository.getById(userId);
+        if (user.getWishList().stream().anyMatch(b -> b.getId() == beerId)) {
+            return;
+        }
+        Beer beer = beerRepository.getById(beerId);
+        user.getWishList().add(beer);
+        userRepository.update(user);
+    }
+
+    @Override
+    public void removeFromWishList(int userId, int beerId) {
+
+        User user = userRepository.getById(userId);
+        if (user.getWishList().stream().noneMatch(b -> b.getId() == beerId)) {
+            throw new EntityNotFoundExeption("Beer", beerId);
+        }
+        user.getWishList().removeIf(b -> b.getId() == beerId);
+        userRepository.update(user);
     }
 }

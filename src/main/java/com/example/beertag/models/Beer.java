@@ -1,5 +1,6 @@
 package com.example.beertag.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -24,11 +25,10 @@ public class Beer {
     @JoinColumn(name = "style_id")
     private Style style;
 
-    public Beer(int id, String name, double abv) {
-        this.id = id;
-        this.name = name;
-        this.abv = abv;
-    }
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     public Beer() {
 
@@ -64,6 +64,14 @@ public class Beer {
 
     public void setStyle(Style style) {
         this.style = style;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

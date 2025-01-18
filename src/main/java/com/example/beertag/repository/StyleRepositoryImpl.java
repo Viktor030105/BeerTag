@@ -5,6 +5,7 @@ import com.example.beertag.models.Style;
 import com.example.beertag.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,8 @@ public class StyleRepositoryImpl implements StyleRepository{
     @Override
     public List<Style> getAll() {
         try(Session session = sessionFactory.openSession()) {
-            return session.createQuery("from Style ", Style.class).list();
+            Query<Style> query = session.createQuery("from Style", Style.class);
+            return query.list();
         }
     }
 

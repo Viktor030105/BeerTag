@@ -10,5 +10,9 @@ public interface UserRepository {
 
     User getById(int id);
 
+    User getByName(String username);
+
+    void updateUser(User user);
+
 
 }

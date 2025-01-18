@@ -10,4 +10,10 @@ public interface UserService {
 
     User getById(int id);
 
+    User getByUsername(String username);
+
+    void addBeerToWishList(int userId, int beerId);
+
+    void removeFromWishList(int userId, int beerId);
+
 }

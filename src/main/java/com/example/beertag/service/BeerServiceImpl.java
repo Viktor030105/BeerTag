@@ -4,6 +4,7 @@ import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.models.Beer;
+import com.example.beertag.models.FilterOptions;
 import com.example.beertag.models.User;
 import com.example.beertag.repository.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.List;
 @Service
 public class BeerServiceImpl implements BeerService {
 
+    private static final String MODIFY_BEER_ERROR_MESSAGE = "Only admin or beer creator can modify a beer.";
+
     private final BeerRepository repository;
 
     @Autowired
@@ -21,8 +24,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<Beer> getAllBeers(String name, Double minAbv, Double maxAbv, Integer styleId, String sortBy, String sortOrder) {
-        return repository.getAllBeers();
+    public List<Beer> getAll(FilterOptions filterOptions) {
+        return repository.getAllBeers(filterOptions);
     }
 
     @Override
@@ -31,40 +34,37 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void createBeer(Beer beer){
-        boolean dublicateExists = true;
-
+    public void createBeer(Beer beer, User user) {
+        boolean duplicateExists = true;
         try {
             repository.getByName(beer.getName());
-        } catch (EntityNotFoundExeption ex){
-            dublicateExists = false;
+        } catch (EntityNotFoundExeption e) {
+            duplicateExists = false;
         }
 
-        if (dublicateExists){
-            throw new DublicateEntityExeption("Beer", "name", beer.getName());
+        if (duplicateExists) {
+            throw new EntityNotFoundExeption("Beer", "name", beer.getName());
         }
 
+        beer.setCreatedBy(user);
         repository.createBeer(beer);
     }
 
     @Override
     public void updateBeer(Beer beer, User user){
-        if (!user.isAdmin()){
-            throw new UnauthorizedOperationException("Only admins can delete beer");
-        }
+        checkModifyPermissions(beer.getId(), user);
 
-        boolean dublicateExists = true;
-
+        boolean duplicateExists = true;
         try {
             Beer existingBeer = repository.getByName(beer.getName());
-            if (existingBeer.getId() == beer.getId()){
-                dublicateExists = false;
+            if (existingBeer.getId() == beer.getId()) {
+                duplicateExists = false;
             }
-        } catch (EntityNotFoundExeption ex){
-            dublicateExists = false;
+        } catch (EntityNotFoundExeption e) {
+            duplicateExists = false;
         }
 
-        if (dublicateExists){
+        if (duplicateExists) {
             throw new DublicateEntityExeption("Beer", "name", beer.getName());
         }
 
@@ -73,10 +73,14 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public void deleteBeer(int id, User user){
-        if (!user.isAdmin()){
-            throw new UnauthorizedOperationException("Only admins can delete beer");
-        }
-
+        checkModifyPermissions(id, user);
         repository.deleteBeer(id);
+    }
+
+    private void checkModifyPermissions(int beerId, User user) {
+        Beer beer = repository.getById(beerId);
+        if (!(user.isAdmin() || beer.getCreatedBy().equals(user))) {
+            throw new UnauthorizedOperationException(MODIFY_BEER_ERROR_MESSAGE);
+        }
     }
 }

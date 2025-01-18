@@ -3,6 +3,7 @@ package com.example.beertag.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,9 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "is_admin")
+    private boolean isAdmin;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -91,11 +95,32 @@ public class User {
         this.firstName = firstName;
     }
 
-    public Set<Beer> getWishlist() {
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public Set<Beer> getWishList() {
         return wishlist;
     }
 
     public void setWishlist(Set<Beer> wishlist) {
         this.wishlist = wishlist;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

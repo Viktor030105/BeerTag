@@ -4,6 +4,7 @@ import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,8 +23,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        try(Session session = sessionFactory.openSession()) {
-            return session.createQuery("from User", User.class).list();
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User", User.class);
+            return query.list();
         }
     }
 
@@ -36,6 +38,30 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
             return user;
+        }
+    }
+
+    @Override
+    public User getByName(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username = :username", User.class);
+            query.setParameter("username", username);
+
+            List<User> result = query.list();
+            if (result.size() == 0) {
+                throw new EntityNotFoundExeption("User", "username", username);
+            }
+
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public void updateUser(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.beertag.repository;
 
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Beer;
+import com.example.beertag.models.FilterOptions;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,10 @@ public class BeerRepositoryImpl implements BeerRepository{
     }
 
 
+    @Override
+    public List<Beer> getAll(FilterOptions filterOptions) {
+        return List.of();
+    }
 
     @Override
     public Beer getById(int id){

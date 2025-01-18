@@ -2,40 +2,36 @@ package com.example.beertag.helpers;
 
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.BeerDTO;
-import com.example.beertag.models.Style;
-import com.example.beertag.repository.BeerRepository;
-import com.example.beertag.repository.StyleRepository;
+import com.example.beertag.service.BeerService;
+import com.example.beertag.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ModelMapper {
 
-    private final BeerRepository beerRepository;
-    private final StyleRepository styleRepository;
+    private final BeerService beerService;
+    private final StyleService styleService;
 
     @Autowired
-    public ModelMapper(BeerRepository beerRepository, StyleRepository styleRepository) {
-        this.beerRepository = beerRepository;
-        this.styleRepository = styleRepository;
+    public ModelMapper(BeerService beerService, StyleService styleService) {
+        this.beerService = beerService;
+        this.styleService = styleService;
     }
 
     public Beer fromDto(BeerDTO beerDTO){
         Beer beer = new Beer();
-        dtoToObject(beerDTO, beer);
+        beer.setName(beerDTO.getName());
+        beer.setAbv(beerDTO.getAbv());
+        beer.setStyle(styleService.getById(beerDTO.getStyleId()));
         return beer;
     }
 
     public Beer fromDto(BeerDTO beerDTO, int id){
-        Beer beer = beerRepository.getById(id);
-        dtoToObject(beerDTO, beer);
+        Beer beer = fromDto(beerDTO);
+        beer.setId(id);
+        Beer repositoryBeer = beerService.getById(id);
+        beer.setCreatedBy(repositoryBeer.getCreatedBy());
         return beer;
-    }
-
-    private void dtoToObject(BeerDTO beerDTO, Beer beer) {
-        Style style = styleRepository.getById(beerDTO.getStyleId());
-        beer.setName(beerDTO.getName());
-        beer.setAbv(beerDTO.getAbv());
-        beer.setStyle(style);
     }
 }
