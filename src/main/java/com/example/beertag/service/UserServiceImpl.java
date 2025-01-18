@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getByUsername(String username) {
-        return userRepository.getByUsername(username);
+        return userRepository.getByName(username);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
         }
         Beer beer = beerRepository.getById(beerId);
         user.getWishList().add(beer);
-        userRepository.update(user);
+        userRepository.updateUser(user);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class UserServiceImpl implements UserService{
             throw new EntityNotFoundExeption("Beer", beerId);
         }
         user.getWishList().removeIf(b -> b.getId() == beerId);
-        userRepository.update(user);
+        userRepository.updateUser(user);
     }
 }
