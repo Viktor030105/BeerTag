@@ -26,6 +26,8 @@ public class FilterOptions {
         this.sortOrder = Optional.ofNullable(sortOrder);
     }
 
+    public FilterOptions(){}
+
     public Optional<String> getName() {
         return name;
     }
