@@ -2,7 +2,6 @@ package com.example.beertag.repository;
 
 import com.example.beertag.exeptions.EntityNotFoundExeption;
 import com.example.beertag.models.Style;
-import com.example.beertag.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

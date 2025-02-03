@@ -84,7 +84,7 @@ public class BeerRepositoryImpl implements BeerRepository {
             querry.setParameter("name", name);
             List<Beer> result = querry.list();
 
-            if (result.size() == 0) {
+            if (result.isEmpty()) {
                 throw new EntityNotFoundExeption("Beer", "name", name);
             }
 
@@ -125,18 +125,12 @@ public class BeerRepositoryImpl implements BeerRepository {
             return "";
         }
 
-        String orderBy = "";
-        switch (filterOptions.getSortBy().get()) {
-            case "name":
-                orderBy = "name";
-                break;
-            case "abv":
-                orderBy = "abv";
-                break;
-            case "style":
-                orderBy = "style.name";
-                break;
-        }
+        String orderBy = switch (filterOptions.getSortBy().get()) {
+            case "name" -> "name";
+            case "abv" -> "abv";
+            case "style" -> "style.name";
+            default -> "";
+        };
 
         orderBy = String.format(" order by %s", orderBy);
 

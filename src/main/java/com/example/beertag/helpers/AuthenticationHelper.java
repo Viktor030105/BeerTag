@@ -6,9 +6,7 @@ import com.example.beertag.models.User;
 import com.example.beertag.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class AuthenticationHelper {
@@ -30,6 +28,7 @@ public class AuthenticationHelper {
 
         try {
             String userInfo = headers.getFirst(AUTHORIZATION_HEADER_NAME);
+            assert userInfo != null;
             String username = getUsername(userInfo);
             String password = getPassword(userInfo);
             User user = userService.getByUsername(username);
