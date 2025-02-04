@@ -1,41 +1,91 @@
-BeerTag enables the users to manage all the beers that they have drunk and want to drink. Each beer has detailed information about it from the ABV (alcohol by volume) to the style and description. Data is community driven, and every beer lover can add new beers. Also, BeerTag allows you to rate a beer and see average ratings from different users. The public part is accessible without authentication i.e., for anonymous users. Anonymous users are able to browse all beers and their details. They are also able to filter by name, ABV, country and style, and sort by name, ABV and rating. Anonymous users have the ability to register and login. Registered users are able to create new beers, add a beer to their wish list and drunk list and rate beers. They are able to edit and delete their own beers. Registered users are able to modify their personal information as well. Administrators are the only ones able to edit/delete all beers and users. Administrators can modify breweries, and styles. The REST API provides the following capabilities:
+# Spring boot Project "BeerTag"
 
-1. Countries
+## Overview
 
-· Read operations (must)
+BeerTag enables your users to manage all the beers that they have drunk and want to drink.
+Each beer has detailed information about it from the ABV (alcohol by volume) to the style and who created it. 
+Data is community driven, and every beer lover can add new beers or update his old ones. 
+Of course, there are different users with all the information about them - first and last name, username, email and password. 
+You can see this user info and your own wishlist. 
+There are also admins with some special abilities such as deleting / editing users and beers 
 
-· Create, Update, Delete operations (should)
 
-2. Breweries
+---
+<br>
 
-· Read operations (must)
+## Features
 
-· Create, Update, Delete operations (should)
+- Log in
+- Browse all beers
+- Filter beers by name, ABV and style, and sort them by name and ABV
+- Create new beers
+- Add beer to your wishlist
+- Edit and delete own beers
+- Administrators are able to edit/delete all beers and users
 
-3. Styles
 
-· Read operations (must)
+---
+<br />
 
-· Create, Update, Delete operations (should)
+## Rest API
 
-4. Beers
+Users:
+1. Get all users         -> /api/users
+2. Get user by id        ->  /api/users/{id}
+3. View wishlist         -> /api/users/{id}/wish-list
+4. Add to wishlist       -> /api/users/{id}/wish-list/{beerId}
+5. Remove from wishlist  -> /api/users/{id}/wish-list/{beerId}
 
-· CRUD operations (must)
+Beers:
+1. Get all beers   -> /api/beers
+2. Get beer by id  -> /api/beers/{id}
+3. Create beer     -> /api/beers
+4. Update beer     -> /api/beers/{id}
+5. Delete beer     -> /api/beers{id}
 
-· Filter by name, ABV, country and style (must)
 
-· Sort by name, ABV, rating (must)
+---
+<br />
 
-· Rate beer (must)
+## Technologies Used
 
-5. Users
+- Java
+- Spring
+- SQL
+- Database design   
 
-· CRUD operations (must)
 
-· Add beer to wish list (must)
+---
+<br />
 
-· Get wish list beers (must)
+## Installation
 
-· Add beer to drunk list (must)
+Follow these steps to set up and run the application:
 
-· Get drunk list beers (must)
+1. Clone the project on your IDE
+2. Connect to a local server and insert the script and data into a database
+2. Run the application
+2. Open the browser and make different querries 
+
+
+---
+<br />
+
+## Database Diagram
+
+![database_diagram_img](https://github.com/user-attachments/assets/a6d7d268-ba8d-4ba9-b370-27a295d55c0e)
+
+
+---
+<br>
+
+## Contributors
+{{For further information, please feel free to contact me:}}
+
+| Authors         | Emails               | GitHub                           |
+| --------------  | -------------------  |--------------------------------  |
+| Viktor Angelov  | vikotor05@gmail.com  | https://github.com/Viktor030105  |
+
+
+---
+<br />
