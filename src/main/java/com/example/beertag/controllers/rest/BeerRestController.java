@@ -1,4 +1,4 @@
-package com.example.beertag.controllers;
+package com.example.beertag.controllers.rest;
 
 import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.exeptions.EntityNotFoundExeption;
