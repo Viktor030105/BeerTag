@@ -28,6 +28,14 @@
 
     </header>
 
+    <div th:if="${beers.isEmpty()}">
+        <h2 class="AllNoBeersText" th:text="#{beers.title.empty}">No Bears To Show </h2>
+    </div>
+
+    <div th:unless="${beers.isEmpty()}">
+
+        <h2 class="AllNoBeersText" th:text="#{beers.title}">All Bears </h2>
+
     <div class="table">
 
         <div class="header">
@@ -51,6 +59,7 @@
 
         </div>
 
+    </div>
     </div>
 
     <footer>
