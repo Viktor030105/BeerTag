@@ -1,4 +1,4 @@
-package com.example.beertag.controllers;
+package com.example.beertag.controllers.rest;
 
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
