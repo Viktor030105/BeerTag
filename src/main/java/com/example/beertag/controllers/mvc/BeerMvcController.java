@@ -26,7 +26,7 @@ public class BeerMvcController {
 
     @GetMapping
     public String showAllBeers(Model model){
-        List<Beer> beers = beerService.getAll(new FilterOptions());
+        List<Beer> beers = beerService.getAll(new FilterOptions(null, null, null, null, null, null));
         model.addAttribute("beers", beers);
         return "beers";
     }
