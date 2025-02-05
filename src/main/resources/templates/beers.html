@@ -4,10 +4,29 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>All beers</title>
-    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+    <title>BeerTag | All Beers</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 
 </head>
+
+
+<body>
+
+    <header>
+
+        <div class="header-container">
+            <img src="../static/images/logo.png" th:src="@{/images/logo.png}" class="logo" alt="BeerTag logo"/>
+            <div class="nav-links">
+                <h3>
+                    <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
+                    | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+                    | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                </h3>
+            </div>
+        </div>
+
+    </header>
 
     <div class="table">
 
@@ -16,6 +35,7 @@
             <div class="cell" th:text="#{beer.label.name}"> Name </div>
             <div class="cell" th:text="#{beer.label.abv}"> ABV </div>
             <div class="cell" th:text="#{beer.label.style}"> Style </div>
+            <div class="cell" th:text="#{beer.label.email}"> Email </div>
 
         </div>
 
@@ -27,12 +47,15 @@
 
             <div class="cell" th:text="${beer.abv}"> 4.5 </div>
             <div class="cell" th:text="${beer.style.name}"> Style </div>
+            <div class="cell" th:text="${beer.createdBy.email}"> Email </div>
 
         </div>
 
     </div>
 
-<body>
+    <footer>
+        <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
+    </footer>
 
 </body>
 </html>

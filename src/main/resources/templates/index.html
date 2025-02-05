@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Home page</title>
+    <title>BeerTag | Home</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+
 </head>
+
+
 <body>
-    <h2 th:text="#{home.welcome}">Welcome</h2>
+
+    <header>
+
+        <div class="header-container">
+            <img src="../static/images/logo.png" th:src="@{/images/logo.png}" class="logo" alt="BeerTag logo"/>
+            <div class="nav-links">
+                <h3>
+                    <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
+                    | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+                    | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                </h3>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="body-content">
+        <h2 th:text="#{home.welcome}">Welcome</h2>
+        <p>Your perfect location to see all the beer information you will ever need</p>
+    </div>
+
+    <footer>
+        <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
+    </footer>
+
 </body>
+
 </html>

@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8" />
-    <title>BeerTag</title>
-    <link rel="stylesheet" href="../static/style.css" />
-    <link rel="icon" href="../static/favicon.ico">
+
+    <meta charset="UTF-8" />
+    <title>BeerTag | About</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+
 </head>
+
+
 <body>
+
 <header>
+
     <div class="header-container">
-        <img src="../static/images/logo.png" alt="Company Logo" class="logo">
+        <img src="../static/images/logo.png" th:src="@{/images/logo.png}" class="logo" alt="BeerTag logo"/>
         <div class="nav-links">
             <h3>
-                <a href="./homeView.html">Home</a>
-                | <a href="./beersView.html">Beers</a>
-                | <a href="./about.html">About</a>
+                <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
+                | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+                | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
             </h3>
         </div>
     </div>
+
 </header>
+
 <div id="about">
     <h1>About BeerTag</h1>
     <h3>Overview</h3>
@@ -40,8 +49,10 @@
     <li> Edit and delete own beers</li>
     <li style="margin-bottom: 20px"> Administrators are able to edit/delete all beers and users</li>
 </div>
+
 <footer>
-    <small>©️ Copyright 2024, BeerTag</small>
+    <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
 </footer>
+
 </body>
 </html>
