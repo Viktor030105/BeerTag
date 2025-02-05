@@ -2,6 +2,9 @@ package com.example.beertag.helpers;
 
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.BeerDTO;
+import com.example.beertag.models.Style;
+import com.example.beertag.models.User;
+import com.example.beertag.repository.StyleRepository;
 import com.example.beertag.service.BeerService;
 import com.example.beertag.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,27 +14,39 @@ import org.springframework.stereotype.Component;
 public class ModelMapper {
 
     private final BeerService beerService;
-    private final StyleService styleService;
+    private final StyleRepository styleRepository;
 
     @Autowired
-    public ModelMapper(BeerService beerService, StyleService styleService) {
+    public ModelMapper(BeerService beerService, StyleRepository styleRepository) {
         this.beerService = beerService;
-        this.styleService = styleService;
+        this.styleRepository = styleRepository;
     }
 
-    public Beer fromDto(BeerDTO beerDTO){
+    public Beer fromDto(BeerDTO beerDTO, User user){
         Beer beer = new Beer();
-        beer.setName(beerDTO.getName());
-        beer.setAbv(beerDTO.getAbv());
-        beer.setStyle(styleService.getById(beerDTO.getStyleId()));
+        dtoToObject(beerDTO, beer);
+        beer.setCreatedBy(user);
         return beer;
     }
 
     public Beer fromDto(BeerDTO beerDTO, int id){
-        Beer beer = fromDto(beerDTO);
-        beer.setId(id);
-        Beer repositoryBeer = beerService.getById(id);
-        beer.setCreatedBy(repositoryBeer.getCreatedBy());
+        Beer beer = fromDto(beerDTO, null);
+        dtoToObject(beerDTO, beer);
         return beer;
+    }
+
+    public BeerDTO toDto(Beer beer){
+        BeerDTO beerDTO = new BeerDTO();
+        beerDTO.setName(beer.getName());
+        beerDTO.setAbv(beer.getAbv());
+        beerDTO.setStyleId(beer.getStyle().getId());
+        return beerDTO;
+    }
+
+    private void dtoToObject(BeerDTO beerDTO, Beer beer){
+        Style style = styleRepository.getById(beerDTO.getStyleId());
+        beer.setName(beerDTO.getName());
+        beer.setAbv(beerDTO.getAbv());
+        beer.setStyle(style);
     }
 }

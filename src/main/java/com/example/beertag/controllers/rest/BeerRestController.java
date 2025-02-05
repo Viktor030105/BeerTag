@@ -62,7 +62,7 @@ public class BeerRestController {
     public Beer createBeer(@RequestHeader HttpHeaders headers, @Valid @RequestBody BeerDTO beerDTO) {
         try {
             User user = authenticationHelper.tryGetUser(headers);
-            Beer beer = modelMapper.fromDto(beerDTO);
+            Beer beer = modelMapper.fromDto(beerDTO, null);
             service.createBeer(beer, user);
             return beer;
         } catch (EntityNotFoundExeption e) {

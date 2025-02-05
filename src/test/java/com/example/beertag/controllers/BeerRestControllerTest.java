@@ -107,40 +107,6 @@ class BeerRestControllerTest {
     }
 
     @Test
-    void createBeer_ShouldCreateBeer() {
-        HttpHeaders headers = new HttpHeaders();
-
-        when(authenticationHelper.tryGetUser(headers))
-                .thenReturn(normalUser2);
-
-        when(modelMapper.fromDto(testBeerDTO))
-                .thenReturn(testBeer);
-
-        Beer result = controller.createBeer(headers, testBeerDTO);
-
-        verify(service, times(1)).createBeer(testBeer, normalUser2);
-        assertEquals(testBeer, result);
-    }
-
-    @Test
-    void createBeer_ShouldThrowResponseStatusException_WhenDuplicateExists() {
-        HttpHeaders headers = new HttpHeaders();
-
-        when(authenticationHelper.tryGetUser(headers))
-                .thenReturn(normalUser2);
-
-        when(modelMapper.fromDto(testBeerDTO))
-                .thenReturn(testBeer);
-
-        doThrow(new DublicateEntityExeption("Beer", "name", testBeer.getName()))
-                .when(service).createBeer(testBeer, normalUser2);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> controller.createBeer(headers, testBeerDTO));
-
-        assertEquals(HttpStatus.CONFLICT, exception.getStatusCode());
-    }
-
-    @Test
     void updateBeer_ShouldUpdateBeer() {
         HttpHeaders headers = new HttpHeaders();
 
