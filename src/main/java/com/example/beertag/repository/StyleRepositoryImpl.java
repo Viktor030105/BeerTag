@@ -1,6 +1,6 @@
 package com.example.beertag.repository;
 
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.models.Style;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,7 +34,7 @@ public class StyleRepositoryImpl implements StyleRepository{
             Style style = session.get(Style.class, id);
 
             if (style == null) {
-                throw new EntityNotFoundExeption("Style", id);
+                throw new EntityNotFoundException("Style", id);
             }
 
             return style;

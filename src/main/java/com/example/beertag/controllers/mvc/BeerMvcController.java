@@ -7,8 +7,10 @@ import com.example.beertag.service.BeerService;
 import com.example.beertag.service.StyleService;
 import com.example.beertag.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,8 +40,13 @@ public class BeerMvcController {
         return styleService.getAll();
     }
 
+    @ModelAttribute("requestURI")
+    public String requestURI(final HttpServletRequest request) {
+        return request.getRequestURI();
+    }
+
     @GetMapping
-    public String showAllBeers(Model model){
+    public String showAllBeers(Model model) {
         List<Beer> beers = beerService.getAll(new FilterOptions(null, null, null, null, null, null));
         model.addAttribute("beers", beers);
         return "beers";
@@ -51,7 +58,8 @@ public class BeerMvcController {
             Beer beer = beerService.getById(id);
             model.addAttribute("beer", beer);
             return "beer";
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
             model.addAttribute("error", e.getMessage());
             return "not-found";
         }
@@ -66,16 +74,16 @@ public class BeerMvcController {
     @PostMapping("/new")
     public String createBeer(@Valid @ModelAttribute("beer") BeerDTO beer, BindingResult errors) {
 
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             return "beer-new";
         }
 
-        try{
+        try {
             User creator = userService.getById(1);
             Beer newBeer = modelMapper.fromDto(beer, creator);
             beerService.createBeer(newBeer, creator);
             return "redirect:/beers";
-        }catch (DublicateEntityExeption e){
+        } catch (DublicateEntityExeption e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
             return "beer-new";
         }
@@ -92,18 +100,31 @@ public class BeerMvcController {
     @PostMapping("/{id}/update")
     public String updateBeer(@PathVariable int id, @Valid @ModelAttribute("beer") BeerDTO beer, BindingResult errors) {
 
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             return "beer-update";
         }
 
-        try{
+        try {
             User user = userService.getById(1);
             Beer newBeer = modelMapper.fromDto(beer, id);
             beerService.updateBeer(newBeer, user);
             return "redirect:/beers";
-        }catch (DublicateEntityExeption e){
+        } catch (DublicateEntityExeption e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
             return "beer-update";
+        }
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteBeer(@PathVariable int id, Model model) {
+        try {
+            User user = userService.getById(1);
+            beerService.deleteBeer(id, user);
+            return "redirect:/beers";
+        } catch (Exception e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "not-found";
         }
     }
 

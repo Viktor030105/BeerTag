@@ -29,12 +29,16 @@
     </header>
 
     <div th:if="${beers.isEmpty()}">
-        <h2 class="AllNoBeersText" th:text="#{beers.title.empty}">No Bears To Show </h2>
+        <h2 class="AllNoBeersText" th:text="#{beers.title.empty}">No Beers To Show </h2>
     </div>
 
     <div th:unless="${beers.isEmpty()}">
 
         <h2 class="AllNoBeersText" th:text="#{beers.title}">All Bears </h2>
+
+        <h3 style="text-align: center">
+            <a class="CreateBeerButton" href="#" th:href="@{/beers/new}" th:text="#{navigation.create}">Create Beer</a>
+        </h3>
 
     <div class="table">
 

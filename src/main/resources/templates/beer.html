@@ -32,6 +32,11 @@
     <h2 th:text="${beer.getAbv()}">4.5</h2>
     <h2 th:text="${beer.getStyle().getName()}">Porter</h2>
 
+    <h3>
+        <a class="CreateBeerButton" href="#" th:href="@{/beers/{id}/update(id = ${beer.getId()})}" th:text="#{navigation.update}">Update Beer</a>
+        | <a class="CreateBeerButton" href="#" th:href="@{/beers/{id}/delete(id = ${beer.getId()})}" th:text="#{navigation.delete}">Delete Beer</a>
+    </h3>
+
     <footer>
         <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
     </footer>

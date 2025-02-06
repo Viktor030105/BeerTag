@@ -1,7 +1,7 @@
 package com.example.beertag.service;
 
 import com.example.beertag.exeptions.DublicateEntityExeption;
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.FilterOptions;
@@ -38,12 +38,12 @@ public class BeerServiceImpl implements BeerService {
         boolean duplicateExists = true;
         try {
             repository.getByName(beer.getName());
-        } catch (EntityNotFoundExeption e) {
+        } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 
         if (duplicateExists) {
-            throw new EntityNotFoundExeption("Beer", "name", beer.getName());
+            throw new DublicateEntityExeption("Beer", "name", beer.getName());
         }
 
         beer.setCreatedBy(user);
@@ -60,7 +60,7 @@ public class BeerServiceImpl implements BeerService {
             if (existingBeer.getId() == beer.getId()) {
                 duplicateExists = false;
             }
-        } catch (EntityNotFoundExeption e) {
+        } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
 

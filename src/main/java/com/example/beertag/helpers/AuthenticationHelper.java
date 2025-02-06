@@ -1,6 +1,6 @@
 package com.example.beertag.helpers;
 
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.models.User;
 import com.example.beertag.service.UserService;
@@ -38,7 +38,7 @@ public class AuthenticationHelper {
             }
 
             return user;
-        } catch (EntityNotFoundExeption e) {
+        } catch (EntityNotFoundException e) {
             throw new UnauthorizedOperationException(INVALID_AUTHENTICATION_ERROR);
         }
     }

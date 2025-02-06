@@ -1,7 +1,7 @@
 package com.example.beertag.controllers.rest;
 
 import com.example.beertag.exeptions.DublicateEntityExeption;
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.ModelMapper;
@@ -10,7 +10,6 @@ import com.example.beertag.models.BeerDTO;
 import com.example.beertag.models.FilterOptions;
 import com.example.beertag.models.User;
 import com.example.beertag.service.BeerService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +50,7 @@ public class BeerRestController {
     public Beer getBeerById(@PathVariable int id) {
         try{
             return service.getById(id);
-        } catch (EntityNotFoundExeption ex){
+        } catch (EntityNotFoundException ex){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, ex.getMessage());
         }
@@ -65,7 +64,7 @@ public class BeerRestController {
             Beer beer = modelMapper.fromDto(beerDTO, null);
             service.createBeer(beer, user);
             return beer;
-        } catch (EntityNotFoundExeption e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DublicateEntityExeption e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
@@ -81,9 +80,9 @@ public class BeerRestController {
             Beer beer = modelMapper.fromDto(beerDTO, id);
             service.updateBeer(beer, user);
             return beer;
-        } catch (EntityNotFoundException e) {
+        } catch (jakarta.persistence.EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (EntityNotFoundExeption e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
@@ -95,7 +94,7 @@ public class BeerRestController {
         try {
             User user = authenticationHelper.tryGetUser(headers);
             service.deleteBeer(id, user);
-        } catch (EntityNotFoundException e) {
+        } catch (jakarta.persistence.EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

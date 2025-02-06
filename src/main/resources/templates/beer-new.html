@@ -30,7 +30,7 @@
 
     <h2>New Beer</h2>
 
-    <form th:fragment="beer-form" action="#" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${beer}" method="post">
+    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" method="post">
 
         <label th:text="#{beer.label.name}">Beer</label>
         <br>

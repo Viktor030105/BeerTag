@@ -140,3 +140,8 @@ li{
     text-align: center;
     text-decoration: underline wavy burlywood;
 }
+
+.CreateBeerButton{
+    text-align: center;
+    border: 1px solid lightskyblue;
+}

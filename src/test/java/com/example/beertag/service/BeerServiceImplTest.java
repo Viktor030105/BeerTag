@@ -1,6 +1,6 @@
 package com.example.beertag.service;
 
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.FilterOptions;
@@ -87,13 +87,13 @@ class BeerServiceImplTest {
         when(repository.getByName(testBeer.getName()))
                 .thenReturn(testBeer);
 
-        assertThrows(EntityNotFoundExeption.class, () -> service.createBeer(testBeer, normalUser));
+        assertThrows(EntityNotFoundException.class, () -> service.createBeer(testBeer, normalUser));
     }
 
     @Test
     void createBeer_ShouldCreateBeer() {
         when(repository.getByName(testBeer.getName()))
-                .thenThrow(EntityNotFoundExeption.class);
+                .thenThrow(EntityNotFoundException.class);
 
         service.createBeer(testBeer, normalUser);
 
@@ -118,7 +118,7 @@ class BeerServiceImplTest {
         when(repository.getById(1))
                 .thenReturn(testBeer);
         when(repository.getByName(testBeer.getName()))
-                .thenThrow(EntityNotFoundExeption.class);
+                .thenThrow(EntityNotFoundException.class);
 
         service.updateBeer(testBeer, normalUser);
 

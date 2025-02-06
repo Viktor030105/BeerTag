@@ -1,6 +1,6 @@
 package com.example.beertag.service;
 
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.User;
 import com.example.beertag.repository.BeerRepository;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService{
 
         User user = userRepository.getById(userId);
         if (user.getWishList().stream().noneMatch(b -> b.getId() == beerId)) {
-            throw new EntityNotFoundExeption("Beer", beerId);
+            throw new EntityNotFoundException("Beer", beerId);
         }
         user.getWishList().removeIf(b -> b.getId() == beerId);
         userRepository.updateUser(user);

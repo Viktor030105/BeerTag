@@ -30,7 +30,7 @@ public class ModelMapper {
     }
 
     public Beer fromDto(BeerDTO beerDTO, int id){
-        Beer beer = fromDto(beerDTO, null);
+        Beer beer = beerService.getById(id);
         dtoToObject(beerDTO, beer);
         return beer;
     }

@@ -1,8 +1,7 @@
 package com.example.beertag.controllers;
 
 import com.example.beertag.controllers.rest.BeerRestController;
-import com.example.beertag.exeptions.DublicateEntityExeption;
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.ModelMapper;
@@ -99,7 +98,7 @@ class BeerRestControllerTest {
     @Test
     void getBeerById_ShouldThrowResponseStatusException_WhenNotFound() {
         when(service.getById(1))
-                .thenThrow(new EntityNotFoundExeption("Beer", "id", "1"));
+                .thenThrow(new EntityNotFoundException("Beer", "id", "1"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> controller.getBeerById(1));
 

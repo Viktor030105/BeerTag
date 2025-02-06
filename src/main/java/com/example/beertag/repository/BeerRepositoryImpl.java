@@ -1,7 +1,7 @@
 package com.example.beertag.repository;
 
 
-import com.example.beertag.exeptions.EntityNotFoundExeption;
+import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.FilterOptions;
 import org.hibernate.Session;
@@ -70,7 +70,7 @@ public class BeerRepositoryImpl implements BeerRepository {
         try (Session session = sessionFactory.openSession()) {
             Beer beer = session.get(Beer.class, id);
             if (beer == null) {
-                throw new EntityNotFoundExeption("Beer", id);
+                throw new EntityNotFoundException("Beer", id);
             }
 
             return beer;
@@ -85,7 +85,7 @@ public class BeerRepositoryImpl implements BeerRepository {
             List<Beer> result = querry.list();
 
             if (result.isEmpty()) {
-                throw new EntityNotFoundExeption("Beer", "name", name);
+                throw new EntityNotFoundException("Beer", "name", name);
             }
 
             return result.get(0);
