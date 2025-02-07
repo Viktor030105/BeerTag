@@ -1,5 +1,5 @@
 html{
-    background-color: azure;
+    background-color: #FAFAFA;
 }
 
 header {
@@ -15,8 +15,9 @@ header {
 
 .logo {
     border: 1px solid lightskyblue;
-    height: 40px; /* Adjust size as needed */
-    width: auto;    margin-right: 20px; /* Adds space between logo and links */
+    height: 40px;
+    width: auto;
+    margin-right: 20px;
 }
 .nav-links {
     margin-left: auto; /* Pushes links to the right */
@@ -105,19 +106,23 @@ a {
 }
 
 .btn-primary {
+    border-color: #007bff;
     margin: 12px 6px 12px 0px;
     color: #fff;
     background-color: #007bff;
-    border-color: #007bff;
-    height: 30px;
+    border-radius: 50px;
+    height: 40px;
+    width: 98px;
 }
 
 .btn-danger {
+    padding: 6px;
+    text-align: center;
     margin: 12px 6px 12px 0px;
     color: #fff;
     background-color: #dc3545;
-    border-color: #dc3545;
-    height: 30px;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 
 a.nav {
@@ -138,10 +143,30 @@ li{
 
 .AllNoBeersText{
     text-align: center;
-    text-decoration: underline wavy burlywood;
+    text-decoration: underline 1.8px;
 }
 
 .CreateBeerButton{
     text-align: center;
-    border: 1px solid lightskyblue;
+    padding: 6px;
+    margin: 12px 6px 12px 0px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 10px;
+    border: 2px solid black;
 }
+
+#homePageLogo{
+    width: 400px;
+    border: 1px solid lightblue;
+    border-radius: 14px;
+}
+
+#beerTable{
+    border: 2px solid lightblue;
+    display: inline-block;
+    padding: 2px 24px 2px 24px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+

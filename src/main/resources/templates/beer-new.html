@@ -28,37 +28,41 @@
 
     </header>
 
-    <h2>New Beer</h2>
+    <div style="text-align: center">
 
-    <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" method="post">
+        <h2 style="text-decoration: underline 1.8px;">New Beer</h2>
 
-        <label th:text="#{beer.label.name}">Beer</label>
-        <br>
-        <input type="text" th:field="*{name}"/>
-        <label class="form-error" th:errors="*{name}">Name error placeholder</label>
-        <br><br>
+        <form th:fragment="beer-form" action="#" th:action="@{__${requestURI}__}" th:object="${beer}" method="post">
 
-        <label th:text="#{beer.label.abv}">ABV</label>
-        <br>
-        <input type="text" th:field="*{abv}"/>
-        <label class="form-error" th:errors="*{abv}">ABV error placeholder</label>
-        <br><br>
+            <label class="form-label" th:text="#{beer.label.name}">Beer</label>
+            <br>
+            <input class="form-input" type="text" th:field="*{name}" placeholder="Enter beer name:"/>
+            <label class="form-error" th:errors="*{name}">Name error placeholder</label>
+            <br><br>
 
-        <label th:text="#{beer.label.style}">Style</label>
-        <br>
-        <select th:field="*{styleId}">
-            <option th:each="style : ${styles}"
-                    th:value="${style.getId()}"
-                    th:text="${style.getName()}">
-                Beer Style One
-            </option>
-        </select>
-        <label class="form-error" th:errors="*{styleId}">Style error placeholder</label>
-        <br><br>
+            <label class="form-label" th:text="#{beer.label.abv}">ABV</label>
+            <br>
+            <input class="form-input" type="text" th:field="*{abv}" placeholder="Enter beer ABV:"/>
+            <label class="form-error" th:errors="*{abv}">ABV error placeholder</label>
+            <br><br>
 
-        <input type="submit" value="Save">
-        
-    </form>
+            <label class="form-label" th:text="#{beer.label.style}">Style</label>
+            <br>
+            <select class="form-input" th:field="*{styleId}">
+                <option th:each="style : ${styles}"
+                        th:value="${style.getId()}"
+                        th:text="${style.getName()}">
+                    Beer Style One
+                </option>
+            </select>
+            <label class="form-error" th:errors="*{styleId}">Style error placeholder</label>
+            <br><br>
+
+            <input class="btn-primary" type="submit" value="Save">
+
+        </form>
+
+    </div>
     
     <footer>
         <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>

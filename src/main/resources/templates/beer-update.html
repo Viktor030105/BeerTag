@@ -27,9 +27,13 @@
 
     </header>
 
-    <h2>Edit Beer</h2>
+    <div style="text-align: center">
 
-    <form th:replace="~{beer-new.html :: beer-form}"></form>
+        <h2 style="text-decoration: underline 1.8px;">Edit Beer</h2>
+
+        <form th:replace="~{beer-new.html :: beer-form}"></form>
+
+    </div>
 
     <footer>
         <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
