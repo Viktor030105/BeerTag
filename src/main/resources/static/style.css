@@ -156,6 +156,10 @@ li{
     border: 2px solid black;
 }
 
+.log-register{
+    text-align: center;
+}
+
 #homePageLogo{
     width: 400px;
     border: 1px solid lightblue;

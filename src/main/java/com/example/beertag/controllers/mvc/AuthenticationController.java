@@ -1,8 +1,13 @@
 package com.example.beertag.controllers.mvc;
 
 import com.example.beertag.exeptions.AuthenticationFailureException;
+import com.example.beertag.exeptions.DublicateEntityExeption;
 import com.example.beertag.helpers.AuthenticationHelper;
+import com.example.beertag.helpers.ModelMapper;
 import com.example.beertag.models.LoginDTO;
+import com.example.beertag.models.RegisterDTO;
+import com.example.beertag.models.User;
+import com.example.beertag.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
+    private final UserService userService;
+    private final ModelMapper modelMapper;
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public AuthenticationController(AuthenticationHelper authenticationHelper) {
+    public AuthenticationController(UserService userService, ModelMapper modelMapper, AuthenticationHelper authenticationHelper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -32,7 +41,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String HandleLogin(@Valid @ModelAttribute("login") LoginDTO loginDTO
+    public String handleLogin(@Valid @ModelAttribute("login") LoginDTO loginDTO
             , BindingResult bindingResult
             , HttpSession session) {
 
@@ -50,6 +59,44 @@ public class AuthenticationController {
             bindingResult.rejectValue("username", "error.login", e.getMessage());
 
             return "login";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String handleLogout(HttpSession session){
+        session.removeAttribute("currentUser");
+        return "redirect:/";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        model.addAttribute("register", new RegisterDTO());
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String handleRegister(@Valid @ModelAttribute("register") RegisterDTO registerDTO
+            , BindingResult bindingResult
+            , HttpSession session) {
+
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+
+        if (!registerDTO.getPassword().equals(registerDTO.getPasswordConfirm())){
+            bindingResult.rejectValue("passwordConfirm",
+                    "error.register.password",
+                    "Password conformation must match password");
+            return "register";
+        }
+
+        try {
+            User user = modelMapper.fromDto(registerDTO);
+            userService.createUser(user);
+            return "redirect:/auth/login";
+        } catch (DublicateEntityExeption e){
+            bindingResult.rejectValue("username", "username.error", e.getMessage());
+            return "register";
         }
     }
 }

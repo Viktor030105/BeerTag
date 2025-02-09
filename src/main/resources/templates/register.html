@@ -3,12 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>BeerTag | LogIn</title>
+    <title>BeerTag | Register</title>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 
 </head>
-
 
 <body>
 
@@ -32,9 +31,9 @@
 
 <div class="log-register">
 
-    <h2 style="text-decoration: underline 1.8px;">Login</h2>
+    <h2 style="text-decoration: underline 1.8px;">Register</h2>
 
-    <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+    <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
 
         <label class="form-label" th:text="#{user.label.username}"> Username </label>
         <br>
@@ -48,7 +47,31 @@
         <label class="form-error" th:errors="*{password}"> Password error placeholder </label>
         <br> <br>
 
-        <input class="btn-primary" type="submit" value="Login">
+        <label class="form-label" th:text="#{user.label.confirmPassword}"> Confirm Password </label>
+        <br>
+        <input class="form-input" type="password" th:field="*{passwordConfirm}" placeholder="Confirm password:">
+        <label class="form-error" th:errors="*{passwordConfirm}"> Password confirm error placeholder </label>
+        <br><br>
+
+        <label class="form-label" th:text="#{user.label.firstName}"> First Name </label>
+        <br>
+        <input class="form-input" type="text" th:field="*{firstName}" placeholder="Enter first name:">
+        <label class="form-error" th:errors="*{firstName}"> First name error placeholder </label>
+        <br> <br>
+
+        <label class="form-label" th:text="#{user.label.lastName}"> Last Name </label>
+        <br>
+        <input class="form-input" type="text" th:field="*{lastName}" placeholder="Enter last name:">
+        <label class="form-error" th:errors="*{lastName}"> Last name error placeholder </label>
+        <br> <br>
+
+        <label class="form-label" th:text="#{user.label.email}"> Email </label>
+        <br>
+        <input class="form-input" type="email" th:field="*{email}" placeholder="Enter email:">
+        <label class="form-error" th:errors="*{email}"> Email error placeholder </label>
+        <br> <br>
+
+        <input class="btn-primary" type="submit" value="Register">
 
     </form>
 
@@ -57,7 +80,6 @@
 <footer>
     <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
 </footer>
-
 
 </body>
 </html>

@@ -1,10 +1,8 @@
 package com.example.beertag.helpers;
 
-import com.example.beertag.models.Beer;
-import com.example.beertag.models.BeerDTO;
-import com.example.beertag.models.Style;
-import com.example.beertag.models.User;
+import com.example.beertag.models.*;
 import com.example.beertag.repository.StyleRepository;
+import com.example.beertag.repository.UserRepository;
 import com.example.beertag.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,11 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelMapper {
 
+    private final UserRepository userRepository;
     private final BeerService beerService;
     private final StyleRepository styleRepository;
 
     @Autowired
-    public ModelMapper(BeerService beerService, StyleRepository styleRepository) {
+    public ModelMapper(UserRepository userRepository, BeerService beerService, StyleRepository styleRepository) {
+        this.userRepository = userRepository;
         this.beerService = beerService;
         this.styleRepository = styleRepository;
     }
@@ -47,5 +47,16 @@ public class ModelMapper {
         beer.setName(beerDTO.getName());
         beer.setAbv(beerDTO.getAbv());
         beer.setStyle(style);
+    }
+
+    public User fromDto(RegisterDTO registerDTO){
+        User user = new User();
+        user.setUsername(registerDTO.getUsername());
+        user.setPassword(registerDTO.getPassword());
+        user.setFirstName(registerDTO.getFirstName());
+        user.setLastName(registerDTO.getLastName());
+        user.setEmail(registerDTO.getEmail());
+
+        return user;
     }
 }

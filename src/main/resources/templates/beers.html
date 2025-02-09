@@ -20,8 +20,11 @@
             <div class="nav-links">
                 <h3>
                     <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
-                    | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
-                    | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                    |  <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+                    |  <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                    |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
+                    |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
+                    |  <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
                 </h3>
             </div>
         </div>

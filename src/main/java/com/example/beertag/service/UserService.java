@@ -12,6 +12,8 @@ public interface UserService {
 
     User getByUsername(String username);
 
+    void createUser(User user);
+
     void addBeerToWishList(int userId, int beerId);
 
     void removeFromWishList(int userId, int beerId);

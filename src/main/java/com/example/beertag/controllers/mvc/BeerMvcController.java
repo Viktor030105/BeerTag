@@ -1,6 +1,9 @@
 package com.example.beertag.controllers.mvc;
 
+import com.example.beertag.exeptions.AuthenticationFailureException;
 import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.UnauthorizedOperationException;
+import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.ModelMapper;
 import com.example.beertag.models.*;
 import com.example.beertag.service.BeerService;
@@ -8,6 +11,7 @@ import com.example.beertag.service.StyleService;
 import com.example.beertag.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +30,15 @@ public class BeerMvcController {
     private final StyleService styleService;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public BeerMvcController(BeerService beerService, StyleService styleService, ModelMapper modelMapper, UserService userService) {
+    public BeerMvcController(BeerService beerService, StyleService styleService, ModelMapper modelMapper, UserService userService, AuthenticationHelper authenticationHelper) {
         this.beerService = beerService;
         this.styleService = styleService;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.authenticationHelper = authenticationHelper;
     }
 
     @ModelAttribute("styles")
@@ -66,22 +72,34 @@ public class BeerMvcController {
     }
 
     @GetMapping("/new")
-    public String showNewBeerPage(Model model) {
+    public String showNewBeerPage(Model model, HttpSession httpSession) {
+        try {
+            authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
+
         model.addAttribute("beer", new BeerDTO());
         return "beer-new";
     }
 
     @PostMapping("/new")
-    public String createBeer(@Valid @ModelAttribute("beer") BeerDTO beer, BindingResult errors) {
+    public String createBeer(@Valid @ModelAttribute("beer") BeerDTO beer, BindingResult errors, HttpSession httpSession) {
+
+        User user;
+        try {
+           user = authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
 
         if (errors.hasErrors()) {
             return "beer-new";
         }
 
         try {
-            User creator = userService.getById(1);
-            Beer newBeer = modelMapper.fromDto(beer, creator);
-            beerService.createBeer(newBeer, creator);
+            Beer newBeer = modelMapper.fromDto(beer, user);
+            beerService.createBeer(newBeer, user);
             return "redirect:/beers";
         } catch (DublicateEntityExeption e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
@@ -90,42 +108,78 @@ public class BeerMvcController {
     }
 
     @GetMapping({"{id}/update"})
-    public String showEditBeerPage(@PathVariable int id, Model model) {
-        Beer beer = beerService.getById(id);
-        BeerDTO beerDTO = modelMapper.toDto(beer);
-        model.addAttribute("beer", beerDTO);
-        return "beer-update";
+    public String showEditBeerPage(@PathVariable int id, Model model, HttpSession httpSession) {
+        try {
+            authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
+
+        try {
+            Beer beer = beerService.getById(id);
+            BeerDTO beerDTO = modelMapper.toDto(beer);
+            model.addAttribute("beerId", id);
+            model.addAttribute("beer", beerDTO);
+            return "beer-update";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("error", e.getMessage());
+            return "not-found";
+        }
+
     }
 
     @PostMapping("/{id}/update")
-    public String updateBeer(@PathVariable int id, @Valid @ModelAttribute("beer") BeerDTO beer, BindingResult errors) {
+    public String updateBeer(@PathVariable int id, @Valid @ModelAttribute("beer") BeerDTO beer,
+                             BindingResult errors,
+                             HttpSession httpSession, Model model) {
+
+        User user;
+        try {
+            user = authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
 
         if (errors.hasErrors()) {
             return "beer-update";
         }
 
         try {
-            User user = userService.getById(1);
             Beer newBeer = modelMapper.fromDto(beer, id);
             beerService.updateBeer(newBeer, user);
+
             return "redirect:/beers";
         } catch (DublicateEntityExeption e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
             return "beer-update";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("error", e.getMessage());
+            return "not-found";
+        } catch (UnauthorizedOperationException e){
+            model.addAttribute("error", e.getMessage());
+            return "access-denied";
         }
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteBeer(@PathVariable int id, Model model) {
+    public String deleteBeer(@PathVariable int id, Model model, HttpSession httpSession) {
+        User user;
         try {
-            User user = userService.getById(1);
+            user = authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
+
+        try {
             beerService.deleteBeer(id, user);
+
             return "redirect:/beers";
-        } catch (Exception e) {
-            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "not-found";
+        } catch (UnauthorizedOperationException e){
+            model.addAttribute("error", e.getMessage());
+            return "access-denied";
         }
     }
-
 }
