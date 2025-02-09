@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BeerTag | LogIn</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+
+</head>
+
+
+<body>
+
+<form action="#" th:action="@{/auth/login}" th:object="${login}" method="post">
+
+    <label class="form-label" th:text="#{user.label.username}"> Username </label>
+    <br>
+    <input class="form-input" type="text" th:field="*{username}">
+    <label class="form-error" th:errors="*{username}"> Username error placeholder </label>
+    <br><br>
+
+    <label class="form-label" th:text="#{user.label.password}"> Password </label>
+    <br>
+    <input class="form-input" type="password" th:field="*{password}">
+    <label class="form-error" th:errors="*{password}"> Password error placeholder </label>
+    <br> <br>
+
+    <input class="btn-primary" type="submit" value="Login">
+
+</form>
+
+</body>
+</html>

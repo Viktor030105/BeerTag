@@ -6,7 +6,6 @@ import com.example.beertag.models.Style;
 import com.example.beertag.models.User;
 import com.example.beertag.repository.StyleRepository;
 import com.example.beertag.service.BeerService;
-import com.example.beertag.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
