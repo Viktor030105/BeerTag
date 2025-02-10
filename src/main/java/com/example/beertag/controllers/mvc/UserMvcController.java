@@ -1,24 +1,18 @@
 package com.example.beertag.controllers.mvc;
 
-import com.example.beertag.exeptions.AuthenticationFailureException;
-import com.example.beertag.exeptions.DublicateEntityExeption;
-import com.example.beertag.exeptions.UnauthorizedOperationException;
-import com.example.beertag.models.Beer;
-import com.example.beertag.models.BeerDTO;
 import com.example.beertag.models.User;
 import com.example.beertag.service.UserService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserMvcController {
 
     private final UserService userService;
@@ -26,6 +20,13 @@ public class UserMvcController {
     @Autowired
     public UserMvcController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public String showAllUsers(Model model) {
+        List<User> users = userService.getAll();
+        model.addAttribute("users", users);
+        return "users";
     }
 
     @GetMapping("/{id}")

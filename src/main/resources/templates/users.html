@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BeerTag | User</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="header-container">
+        <img src="../static/images/logo.png" th:src="@{/images/logo.png}" class="logo" alt="BeerTag logo"/>
+        <div class="nav-links">
+            <h3>
+                <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
+                | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+                | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                | <a href="#" th:href="@{/user}" th:text="#{navigation.user}">User</a>
+                |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
+                |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
+                |  <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
+            </h3>
+        </div>
+    </div>
+
+</header>
+
+<div th:if="${user.isEmpty()}">
+    <h2 class="AllNoBeersText" th:text="#{users.title.empty}">No Users To Show </h2>
+</div>
+
+<div th:unless="${beers.isEmpty()}">
+
+    <h2 class="AllNoBeersText" th:text="#{users.title}">All Users </h2>
+
+    <div class="table">
+
+        <div class="header">
+
+            <div class="cell" th:text="#{user.label.username}"> Username </div>
+            <div class="cell" th:text="#{user.label.password}"> Password </div>
+            <div class="cell" th:text="#{user.label.firstName}"> First Name </div>
+            <div class="cell" th:text="#{user.label.lastName}"> Last Name </div>
+            <div class="cell" th:text="#{user.label.email}"> Email </div>
+
+        </div>
+
+        <div class="row" th:each="user : ${user}">
+
+            <div class="cell">
+                <a href="#" th:href="@{/users/{id}(id = ${user.getId()})}" th:text="${user.username}">User</a>
+            </div>
+
+            <div class="cell" th:text="${user.password}"> 12345 </div>
+            <div class="cell" th:text="${user.firstName}"> Test </div>
+            <div class="cell" th:text="${user.lastName}"> Test </div>
+            <div class="cell" th:text="${user.email}"> Email </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!--<div style="text-align: center">-->
+
+<!--    <h2 style="text-decoration: underline 1.8px;">User info:</h2>-->
+
+<!--    <div class="table" id="beerTable">-->
+
+<!--        <h2 th:text="${user.getUsername()}">viktor05</h2>-->
+<!--        <h2 th:text="${user.getPassword()}">Password</h2>-->
+<!--        <h2 th:text="${user.getFirstName()}">Viktor</h2>-->
+<!--        <h2 th:text="${user.getLastName()}">Angelov</h2>-->
+<!--        <h2 th:text="${user.getEmail()}">Email</h2>-->
+
+<!--    </div>-->
+
+
+<!--    <h3>-->
+<!--        <a class="CreateBeerButton" href="#" th:href="@{/user/{id}/update(id = ${user.getId()})}" th:text="#{navigation.update}">Update User</a>-->
+<!--        |  <a class="btn-danger" href="#" th:href="@{/user/{id}/delete(id = ${user.getId()})}" th:text="#{navigation.delete}">Delete User</a>-->
+<!--    </h3>-->
+
+<!--</div>-->
+
+<footer>
+    <small th:text="${'©️ Copyright ' + #dates.year(#dates.createNow()) + ' BeerTag'}">Copyright 2025 BeerTag</small>
+</footer>
+
+</body>
+</html>
