@@ -22,6 +22,7 @@
                     <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
                     |  <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
                     |  <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                    | <a href="#" th:href="@{/user}" th:text="#{navigation.user}">User</a>
                     |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
                     |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
                     |  <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
@@ -34,7 +35,7 @@
     <div class="body-content">
         <h2 th:text="#{home.welcome}">Welcome</h2>
         <p>Your perfect location to see all the beer information you will ever need</p>
-        <h2 th:if="${isAuthenticated}" th:text="${session.currentUser}"></h2>
+        <h2 th:if="${isAuthenticated}" th:text="${session.currentUser}"> Hello, username</h2>
         <img id="homePageLogo" src="../static/images/logo.png" th:src="@{/images/logo.png}" alt="BeerTag logo"/>
     </div>
 

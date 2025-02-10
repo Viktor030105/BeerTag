@@ -21,6 +21,7 @@
                 <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
                 | <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
                 | <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+                | <a href="#" th:href="@{/user}" th:text="#{navigation.user}">User</a>
             </h3>
         </div>
     </div>
@@ -29,10 +30,6 @@
 
 <div class="body-content"><h2 class="label-error" th:text="${statusCode}">HTTP Status Code</h2>
     <h3 class="error" th:text="${error}">Error placeholder</h3>
-</div>
-
-<div style="text-align: center">
-    <img src="../static/images/404.png" th:src="@{images/404.png}" alt="Page Not Found Image">
 </div>
 
 <footer>

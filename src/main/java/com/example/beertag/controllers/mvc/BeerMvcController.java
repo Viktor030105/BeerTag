@@ -182,4 +182,9 @@ public class BeerMvcController {
             return "access-denied";
         }
     }
+
+    @ModelAttribute("isAuthenticated")
+    public boolean populateIsAuthenticated(HttpSession session) {
+        return session.getAttribute("currentUser") != null;
+    }
 }

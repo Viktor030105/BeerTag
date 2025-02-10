@@ -2,9 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
-    <meta charset="UTF-8" />
-    <title>BeerTag | About</title>
+    <meta charset="UTF-8">
+    <title>BeerTag | User</title>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
     <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 
@@ -32,32 +31,26 @@
 
 </header>
 
-<div id="about">
-    <h1>About BeerTag</h1>
-    <h3>Overview</h3>
-    <p style="padding: 0px 40px 20px 40px">
-        BeerTag enables your users to manage all the beers that they have drunk and want to drink.
-        Each beer has detailed information about it from the ABV (alcohol by volume) to the style and who created it.
-        Data is community driven, and every beer lover can add new beers or update his old ones.
-        Of course, there are different users with all the information about them -
-        first and last name, username, email and password. You can see this user info and your own wishlist.
-        There are also admins with some special abilities such as deleting / editing users and beers
-    </p>
-    <hr>
-    <h3>Features</h3>
-    <li> Log in</li>
-    <li> Browse all beers</li>
-    <li> Filter beers by name, ABV and style, and sort them by name and ABV</li>
-    <li> Create new beers</li>
-    <li> Add beer to your wishlist</li>
-    <li> Edit and delete own beers</li>
-    <li style="margin-bottom: 20px"> Administrators are able to edit/delete all beers and users</li>
-    <hr>
-    <h3>Technologies used</h3>
-    <li>Java</li>
-    <li>Spring</li>
-    <li>ThymeLeaf</li>
-    <li style="margin-bottom: 20px">SQL</li>
+<div style="text-align: center">
+
+    <h2 style="text-decoration: underline 1.8px;">User info:</h2>
+
+    <div class="table" id="beerTable">
+
+        <h2 th:text="${user.getUsername()}">viktor05</h2>
+        <h2 th:text="${user.getPassword()}">Password</h2>
+        <h2 th:text="${user.getFirstName()}">Viktor</h2>
+        <h2 th:text="${user.getLastName()}">Angelov</h2>
+        <h2 th:text="${user.getEmail()}">Email</h2>
+
+    </div>
+
+
+    <h3>
+        <a class="CreateBeerButton" href="#" th:href="@{/user/{id}/update(id = ${user.getId()})}" th:text="#{navigation.update}">Update User</a>
+        |  <a class="btn-danger" href="#" th:href="@{/user/{id}/delete(id = ${user.getId()})}" th:text="#{navigation.delete}">Delete User</a>
+    </h3>
+
 </div>
 
 <footer>
