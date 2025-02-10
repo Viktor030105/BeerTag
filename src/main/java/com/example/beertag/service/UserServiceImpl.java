@@ -55,6 +55,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void updateUser(User user) {
+        boolean duplicateExists = true;
+        try {
+            userRepository.getByName(user.getUsername());
+        } catch (EntityNotFoundException e) {
+            duplicateExists = false;
+        }
+
+        if (duplicateExists) {
+            throw new DublicateEntityExeption("User", "username", user.getUsername());
+        }
+
+        userRepository.updateUser(user);
+    }
+
+    @Override
+    public void deleteBeer(int id) {
+        userRepository.deleteUser(id);
+    }
+
+    @Override
     public void addBeerToWishList(int userId, int beerId) {
         User user = userRepository.getById(userId);
         if (user.getWishList().stream().anyMatch(b -> b.getId() == beerId)) {

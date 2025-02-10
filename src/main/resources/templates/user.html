@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>BeerTag | Users</title>
+  <title>BeerTag | User</title>
   <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}"/>
   <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}">
 
@@ -30,40 +30,26 @@
 
 </header>
 
-<div th:if="${users.isEmpty()}">
-  <h2 class="AllNoBeersText" th:text="#{users.title.empty}">No Users To Show </h2>
-</div>
+<div style="text-align: center">
 
-<div th:unless="${users.isEmpty()}">
+  <h2 style="text-decoration: underline 1.8px;">The beer YOU selected:</h2>
 
-  <h2 class="AllNoBeersText" th:text="#{users.title}">All Users </h2>
+  <div class="table" id="beerTable">
 
-  <div class="table">
-
-    <div class="header">
-
-      <div class="cell" th:text="#{user.label.username}"> Username </div>
-      <div class="cell" th:text="#{user.label.password}"> Password </div>
-      <div class="cell" th:text="#{user.label.firstName}"> First name </div>
-      <div class="cell" th:text="#{user.label.lastName}"> Last name </div>
-      <div class="cell" th:text="#{user.label.email}"> Email </div>
-
-    </div>
-
-    <div class="row" th:each="user : ${users}">
-
-      <div class="cell">
-        <a href="#" th:href="@{/users/{id}(id = ${user.getId()})}" th:text="${user.username}">User</a>
-      </div>
-
-      <div class="cell" th:text="${user.password}"> 123456 </div>
-      <div class="cell" th:text="${user.firstName}"> Test </div>
-      <div class="cell" th:text="${user.lastName}"> Test </div>
-      <div class="cell" th:text="${user.email}"> Email </div>
-
-    </div>
+    <h2 th:text="${user.getUsername()}">Username</h2>
+    <h2 th:text="${user.getPassword()}">12345</h2>
+    <h2 th:text="${user.getFirstName()}">Test</h2>
+    <h2 th:text="${user.getLastName()}">Test</h2>
+    <h2 th:text="${user.getEmail()}">Email</h2>
 
   </div>
+
+
+  <h3>
+    <a class="CreateBeerButton" href="#" th:href="@{/users/{id}/update(id = ${user.getId()})}" th:text="#{navigation.update}">Update</a>
+    |   <a class="btn-danger" href="#" th:href="@{/users/{id}/delete(id = ${user.getId()})}" th:text="#{navigation.delete}">Delete</a>
+  </h3>
+
 </div>
 
 <footer>

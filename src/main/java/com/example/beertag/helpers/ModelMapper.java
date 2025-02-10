@@ -42,6 +42,17 @@ public class ModelMapper {
         return beerDTO;
     }
 
+    public UserDTO toDto(User user){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setEmail(user.getEmail());
+
+        return userDTO;
+    }
+
     private void dtoToObject(BeerDTO beerDTO, Beer beer){
         Style style = styleRepository.getById(beerDTO.getStyleId());
         beer.setName(beerDTO.getName());

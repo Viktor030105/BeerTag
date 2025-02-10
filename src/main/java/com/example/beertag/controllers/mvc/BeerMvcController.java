@@ -51,6 +51,11 @@ public class BeerMvcController {
         return request.getRequestURI();
     }
 
+    @ModelAttribute("isAuthenticated")
+    public boolean populateIsAuthenticated(HttpSession session) {
+        return session.getAttribute("currentUser") != null;
+    }
+
     @GetMapping
     public String showAllBeers(Model model) {
         List<Beer> beers = beerService.getAll(new FilterOptions(null, null, null, null, null, null));
@@ -173,7 +178,7 @@ public class BeerMvcController {
         try {
             beerService.deleteBeer(id, user);
 
-            return "redirect:/beers";
+            return "redirect:/users";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "not-found";
@@ -183,8 +188,4 @@ public class BeerMvcController {
         }
     }
 
-    @ModelAttribute("isAuthenticated")
-    public boolean populateIsAuthenticated(HttpSession session) {
-        return session.getAttribute("currentUser") != null;
-    }
 }

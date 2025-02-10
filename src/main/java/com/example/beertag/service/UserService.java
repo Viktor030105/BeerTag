@@ -14,6 +14,10 @@ public interface UserService {
 
     void createUser(User user);
 
+    void updateUser(User user);
+
+    void deleteBeer(int id);
+
     void addBeerToWishList(int userId, int beerId);
 
     void removeFromWishList(int userId, int beerId);
