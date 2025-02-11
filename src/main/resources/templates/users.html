@@ -12,22 +12,24 @@
 <body>
 
 <header>
-
   <div class="header-container">
     <img src="../static/images/logo.png" th:src="@{/images/logo.png}" class="logo" alt="BeerTag logo"/>
-    <div class="nav-links">
-      <h3>
-        <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
-        |  <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
-        |  <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
-        |  <a href="#" th:if="${isAuthenticated}" th:href="@{/users}" th:text="#{navigation.user}">Users</a>
-        |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
-        |  <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
-        |  <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
-      </h3>
-    </div>
+    <nav class="nav-links">
+      <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home Page</a>
+      <span>|</span>
+      <a href="#" th:href="@{/beers}" th:text="#{navigation.all-beers}">Browse all beers</a>
+      <span th:if="${isAuthenticated}">|</span>
+      <a th:if="${isAuthenticated}" href="#" th:href="@{/users}" th:text="#{navigation.user}">Users</a>
+      <span>|</span>
+      <a href="#" th:href="@{/about}" th:text="#{navigation.about}">About</a>
+      <span th:unless="${isAuthenticated}">|</span>
+      <a th:unless="${isAuthenticated}" href="#" th:href="@{/auth/login}" th:text="#{navigation.login}">Login</a>
+      <span th:unless="${isAuthenticated}">|</span>
+      <a th:unless="${isAuthenticated}" href="#" th:href="@{/auth/register}" th:text="#{navigation.register}">Register</a>
+      <span th:if="${isAuthenticated}">|</span>
+      <a th:if="${isAuthenticated}" href="#" th:href="@{/auth/logout}" th:text="#{navigation.logout}">Logout</a>
+    </nav>
   </div>
-
 </header>
 
 <div th:if="${users.isEmpty()}">

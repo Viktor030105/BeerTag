@@ -19,10 +19,25 @@ header {
     width: auto;
     margin-right: 20px;
 }
-.nav-links {
-    margin-left: auto; /* Pushes links to the right */
 
-}.nav-links h3 {
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adds spacing between links */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: blue; /* Adjust as needed */
+    font-weight: bold;
+    font-size: 23px;
+}
+
+.nav-links span {
+    color: black; /* Color of the "|" separator */
+}
+
+.nav-links h3 {
      margin: 0; /* Removes default margin from h3 */
  }
 
