@@ -86,39 +86,39 @@ public class UserMvcController {
         }
 
     }
+//TODO
 
-//    @PostMapping("/{id}/update")
-//    public String updateUser(@PathVariable int id, @Valid @ModelAttribute("user") UserDTO user,
-//                             BindingResult errors,
-//                             HttpSession httpSession, Model model) {
-//
-//        User user1;
-//        try {
-//            user1 = authenticationHelper.tryGetUser(httpSession);
-//        } catch (AuthenticationFailureException e){
-//            return "redirect:/auth/login";
-//        }
-//
-//        if (errors.hasErrors()) {
-//            return "user-update";
-//        }
-//
-//        try {
-//            User newUser = modelMapper.fromDto(user, id);
-//            userService.updateUser(newUser);
-//
-//            return "redirect:/users";
-//        } catch (DublicateEntityExeption e) {
-//            errors.rejectValue("name", "user.exists", e.getMessage());
-//            return "user-update";
-//        } catch (EntityNotFoundException e){
-//            model.addAttribute("error", e.getMessage());
-//            return "not-found";
-//        } catch (UnauthorizedOperationException e){
-//            model.addAttribute("error", e.getMessage());
-//            return "access-denied";
-//        }
-//    }
+    @PostMapping("/{id}/update")
+    public String updateUser(@PathVariable int id, @Valid @ModelAttribute("user") UserDTO user,
+                             BindingResult errors,
+                             HttpSession httpSession, Model model) {
+
+        try {
+            authenticationHelper.tryGetUser(httpSession);
+        } catch (AuthenticationFailureException e){
+            return "redirect:/auth/login";
+        }
+
+        if (errors.hasErrors()) {
+            return "user-update";
+        }
+
+        try {
+            User newUser = modelMapper.fromDto(user, id);
+            userService.updateUser(newUser);
+
+            return "redirect:/users";
+        } catch (DublicateEntityExeption e) {
+            errors.rejectValue("name", "user.exists", e.getMessage());
+            return "user-update";
+        } catch (EntityNotFoundException e){
+            model.addAttribute("error", e.getMessage());
+            return "not-found";
+        } catch (UnauthorizedOperationException e){
+            model.addAttribute("error", e.getMessage());
+            return "access-denied";
+        }
+    }
 
     @GetMapping("/{id}/delete")
     public String deleteUser(@PathVariable int id, Model model, HttpSession httpSession) {

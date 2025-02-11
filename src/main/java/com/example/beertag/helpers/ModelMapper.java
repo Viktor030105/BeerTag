@@ -4,6 +4,7 @@ import com.example.beertag.models.*;
 import com.example.beertag.repository.StyleRepository;
 import com.example.beertag.repository.UserRepository;
 import com.example.beertag.service.BeerService;
+import com.example.beertag.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +14,14 @@ public class ModelMapper {
     private final UserRepository userRepository;
     private final BeerService beerService;
     private final StyleRepository styleRepository;
+    private final UserService userService;
 
     @Autowired
-    public ModelMapper(UserRepository userRepository, BeerService beerService, StyleRepository styleRepository) {
+    public ModelMapper(UserRepository userRepository, BeerService beerService, StyleRepository styleRepository, UserService userService) {
         this.userRepository = userRepository;
         this.beerService = beerService;
         this.styleRepository = styleRepository;
+        this.userService = userService;
     }
 
     public Beer fromDto(BeerDTO beerDTO, User user){
@@ -67,6 +70,17 @@ public class ModelMapper {
         user.setFirstName(registerDTO.getFirstName());
         user.setLastName(registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
+
+        return user;
+    }
+
+    public User fromDto(UserDTO userDTO, int id){
+        User user = userService.getById(id);
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
 
         return user;
     }
