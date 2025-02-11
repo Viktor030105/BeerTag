@@ -34,6 +34,41 @@
     </div>
 </header>
 
+<form class="body-content" action="#" th:action="@{__${requestURI}__}" th:object="${filterDto}" method="get">
+    <div class="body-content">
+        <input type="text" placeholder="Beer Name" th:field="*{name}">
+        <input type="number" placeholder="Min ABV" min="0" max="10" th:field="*{minAbv}">
+        <input type="number" placeholder="Max ABV" min="0" max="10" th:field="*{maxAbv}">
+
+        <select th:field="*{styleId}">
+            <option value="">All Styles</option>
+            <option th:each="style : ${styles}"
+                    th:value="${style.id}"
+                    th:text="${style.name}">
+                BeerStyleOne
+            </option>
+        </select>
+
+        <select th:field="*{sortBy}">
+            <option value="">Sort by</option>
+            <option value="name">By name</option>
+            <option value="abv">By abv</option>
+            <option value="style">By style</option>
+        </select>
+
+        <select th:field="*{sortOrder}">
+            <option value="">Ascending</option>
+            <option value="desc">Descending</option>
+
+        </select>
+
+        <input type="submit" value="Filter">
+    </div>
+</form>
+
+
+
+
 <div th:if="${beers.isEmpty()}">
     <h2 class="AllNoBeersText" th:text="#{beers.title.empty}">No Beers To Show </h2>
 </div>

@@ -57,9 +57,17 @@ public class BeerMvcController {
     }
 
     @GetMapping
-    public String showAllBeers(Model model) {
-        List<Beer> beers = beerService.getAll(new FilterOptions(null, null, null, null, null, null));
-        model.addAttribute("beers", beers);
+    public String showAllBeers(@ModelAttribute("filterDto") FilterOptionsDTO filterOptionsDTO, Model model) {
+        FilterOptions filterOptions = new FilterOptions(
+                filterOptionsDTO.getName(),
+                filterOptionsDTO.getMinAbv(),
+                filterOptionsDTO.getMaxAbv(),
+                filterOptionsDTO.getStyleId(),
+                filterOptionsDTO.getSortBy(),
+                filterOptionsDTO.getSortOrder()
+        );
+
+        model.addAttribute("beers", beerService.getAll(filterOptions));
         return "beers";
     }
 
