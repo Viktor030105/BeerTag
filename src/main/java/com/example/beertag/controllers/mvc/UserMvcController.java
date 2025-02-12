@@ -1,7 +1,7 @@
 package com.example.beertag.controllers.mvc;
 
 import com.example.beertag.exeptions.AuthenticationFailureException;
-import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.DuplicateEntityException;
 import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
@@ -108,7 +108,7 @@ public class UserMvcController {
             userService.updateUser(newUser);
 
             return "redirect:/users";
-        } catch (DublicateEntityExeption e) {
+        } catch (DuplicateEntityException e) {
             errors.rejectValue("name", "user.exists", e.getMessage());
             return "user-update";
         } catch (EntityNotFoundException e){
@@ -131,7 +131,7 @@ public class UserMvcController {
         try {
             userService.deleteBeer(id);
 
-            return "redirect:/beers";
+            return "redirect:/users";
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "not-found";

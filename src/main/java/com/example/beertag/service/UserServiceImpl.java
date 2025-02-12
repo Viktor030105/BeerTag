@@ -1,6 +1,6 @@
 package com.example.beertag.service;
 
-import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.DuplicateEntityException;
 import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.models.Beer;
 import com.example.beertag.models.User;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
         }
 
         if (duplicateExists) {
-            throw new DublicateEntityExeption("User", "username", user.getUsername());
+            throw new DuplicateEntityException("User", "username", user.getUsername());
         }
 
         userRepository.createUser(user);
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService{
         }
 
         if (duplicateExists) {
-            throw new DublicateEntityExeption("User", "username", user.getUsername());
+            throw new DuplicateEntityException("User", "username", user.getUsername());
         }
 
         userRepository.updateUser(user);

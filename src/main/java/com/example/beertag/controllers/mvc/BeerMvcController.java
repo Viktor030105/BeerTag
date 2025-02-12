@@ -1,14 +1,13 @@
 package com.example.beertag.controllers.mvc;
 
 import com.example.beertag.exeptions.AuthenticationFailureException;
-import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.DuplicateEntityException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.ModelMapper;
 import com.example.beertag.models.*;
 import com.example.beertag.service.BeerService;
 import com.example.beertag.service.StyleService;
-import com.example.beertag.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -29,15 +28,13 @@ public class BeerMvcController {
     private final BeerService beerService;
     private final StyleService styleService;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final AuthenticationHelper authenticationHelper;
 
     @Autowired
-    public BeerMvcController(BeerService beerService, StyleService styleService, ModelMapper modelMapper, UserService userService, AuthenticationHelper authenticationHelper) {
+    public BeerMvcController(BeerService beerService, StyleService styleService, ModelMapper modelMapper, AuthenticationHelper authenticationHelper) {
         this.beerService = beerService;
         this.styleService = styleService;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.authenticationHelper = authenticationHelper;
     }
 
@@ -114,7 +111,7 @@ public class BeerMvcController {
             Beer newBeer = modelMapper.fromDto(beer, user);
             beerService.createBeer(newBeer, user);
             return "redirect:/beers";
-        } catch (DublicateEntityExeption e) {
+        } catch (DuplicateEntityException e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
             return "beer-new";
         }
@@ -162,7 +159,7 @@ public class BeerMvcController {
             beerService.updateBeer(newBeer, user);
 
             return "redirect:/beers";
-        } catch (DublicateEntityExeption e) {
+        } catch (DuplicateEntityException e) {
             errors.rejectValue("name", "beer.exists", e.getMessage());
             return "beer-update";
         } catch (EntityNotFoundException e){

@@ -1,6 +1,6 @@
 package com.example.beertag.controllers.rest;
 
-import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.DuplicateEntityException;
 import com.example.beertag.exeptions.EntityNotFoundException;
 import com.example.beertag.exeptions.UnauthorizedOperationException;
 import com.example.beertag.helpers.AuthenticationHelper;
@@ -66,7 +66,7 @@ public class BeerRestController {
             return beer;
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (DublicateEntityExeption e) {
+        } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (UnknownError e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

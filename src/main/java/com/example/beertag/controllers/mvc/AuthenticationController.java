@@ -1,7 +1,7 @@
 package com.example.beertag.controllers.mvc;
 
 import com.example.beertag.exeptions.AuthenticationFailureException;
-import com.example.beertag.exeptions.DublicateEntityExeption;
+import com.example.beertag.exeptions.DuplicateEntityException;
 import com.example.beertag.helpers.AuthenticationHelper;
 import com.example.beertag.helpers.ModelMapper;
 import com.example.beertag.models.LoginDTO;
@@ -75,9 +75,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(@Valid @ModelAttribute("register") RegisterDTO registerDTO
-            , BindingResult bindingResult
-            , HttpSession session) {
+    public String handleRegister(@Valid @ModelAttribute("register") RegisterDTO registerDTO, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "register";
@@ -94,7 +92,7 @@ public class AuthenticationController {
             User user = modelMapper.fromDto(registerDTO);
             userService.createUser(user);
             return "redirect:/auth/login";
-        } catch (DublicateEntityExeption e){
+        } catch (DuplicateEntityException e){
             bindingResult.rejectValue("username", "username.error", e.getMessage());
             return "register";
         }

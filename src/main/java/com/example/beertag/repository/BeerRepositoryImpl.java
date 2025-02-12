@@ -80,9 +80,9 @@ public class BeerRepositoryImpl implements BeerRepository {
     @Override
     public Beer getByName(String name) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Beer> querry = session.createQuery("from Beer where name = :name", Beer.class);
-            querry.setParameter("name", name);
-            List<Beer> result = querry.list();
+            Query<Beer> query = session.createQuery("from Beer where name = :name", Beer.class);
+            query.setParameter("name", name);
+            List<Beer> result = query.list();
 
             if (result.isEmpty()) {
                 throw new EntityNotFoundException("Beer", "name", name);
