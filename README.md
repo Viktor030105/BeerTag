@@ -74,34 +74,61 @@ Beers:
 
 ## Pictures representing the different pages of the project
 
-![user-page](https://github.com/user-attachments/assets/410a4453-0d0f-4402-8293-e72b0942efc3)
-
-![update-user-page](https://github.com/user-attachments/assets/2bff7b8f-d9a4-46ea-88c9-fdd7c164a8fa)
-
-![update-beer-page](https://github.com/user-attachments/assets/d9d7eca6-9ea0-4e0b-8875-60028d167b75)
-
-![page-not-found](https://github.com/user-attachments/assets/2859c8ae-4d1e-4a0f-89c1-dc9727290c44)
-
-![login-page](https://github.com/user-attachments/assets/c7283fe9-6c02-4af7-a884-970ea43dae7a)
-
+Home Page
 ![home-page](https://github.com/user-attachments/assets/245d3c3b-4339-45be-a6d7-508d1e914338)
+<br />
 
-![all-users-page](https://github.com/user-attachments/assets/1254a499-5f94-4149-af5a-7cbe1fc24be6)
-
-![all-beers-page](https://github.com/user-attachments/assets/4a215191-9b25-41ba-8e6d-f04e74533647)
-
-![access-denied-page](https://github.com/user-attachments/assets/0ce0ea34-2376-4944-9255-5fd45b4597af)
-
+About Page
 ![about-page](https://github.com/user-attachments/assets/fd942bd8-a71c-497b-8cce-40abae5728ea)
+<br />
 
+Register Page
 ![register-page](https://github.com/user-attachments/assets/d548c69d-70e1-4548-9653-40ab68b1458f)
+<br />
 
+Login Page
+![login-page](https://github.com/user-attachments/assets/c7283fe9-6c02-4af7-a884-970ea43dae7a)
+<br />
+
+All Beers Page
+![all-beers-page](https://github.com/user-attachments/assets/4a215191-9b25-41ba-8e6d-f04e74533647)
+<br />
+
+Beer Page
 ![beer-page](https://github.com/user-attachments/assets/6f7676cd-bc8d-4c36-9d80-16af154fa90f)
+<br />
+
+Create Beer Page
+![create-beer-page](https://github.com/user-attachments/assets/716e5fae-e290-4d50-993e-fef9fc711430)
+
+<br />
+
+Update Beer Page
+![update-beer-page](https://github.com/user-attachments/assets/d9d7eca6-9ea0-4e0b-8875-60028d167b75)
+<br />
+
+All Users Page
+![all-users-page](https://github.com/user-attachments/assets/1254a499-5f94-4149-af5a-7cbe1fc24be6)
+<br />
+
+User Page
+![user-page](https://github.com/user-attachments/assets/410a4453-0d0f-4402-8293-e72b0942efc3)
+<br />
+
+Update User Page
+![update-user-page](https://github.com/user-attachments/assets/2bff7b8f-d9a4-46ea-88c9-fdd7c164a8fa)
+<br />
+
+Page Not Found
+![page-not-found](https://github.com/user-attachments/assets/2859c8ae-4d1e-4a0f-89c1-dc9727290c44)
+<br />
+
+Access Denied Page
+![access-denied-page](https://github.com/user-attachments/assets/0ce0ea34-2376-4944-9255-5fd45b4597af)
 
 
 ---
 <br />
-
 
 ## Database Diagram
 
